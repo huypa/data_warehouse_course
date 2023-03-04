@@ -3,5 +3,6 @@ SELECT
 , cast(stock_item_id as int) as product_key
 , cast(quantity as int) as quantity
 , cast(unit_price as numeric ) as unit_price
-, cast((quantity * unit_price) as numeric ) as gross_amount
+--, cast((quantity * unit_price) as numeric ) as gross_amount
+, cast(quantity as int) * cast(unit_price as numeric) as gross_amount
 FROM `vit-lam-data.wide_world_importers.sales__order_lines`
