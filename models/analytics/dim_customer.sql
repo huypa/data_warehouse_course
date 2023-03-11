@@ -1,17 +1,24 @@
 with customer_info_source as (
-select  
-  customer_id
-, customer_name
-from `vit-lam-data.wide_world_importers.sales__customers`
-group by 1,2
+  select  
+  *
+  from `vit-lam-data.wide_world_importers.sales__customers`
+  group by 1,2
 )
 , customer_info_rename as (
 select 
-  customer_id as customer_key
-, customer_name as customer_name
+  cast(customer_id as int ) as customer_key
+  , cast(customer_name as string ) as customer_name
+  , cast(customer_category_id as ) as customer_category_key
+  , cast(buying_group_id as ) as buying_group_key
 from customer_info_source
 )
 select 
-  customer_key
-, customer_name
-from customer_info_rename
+  dim.customer.customer_key
+  , dim.customer.customer_name
+  , dim.customer.customer_category_key
+  , dim.customer.buying_group_key
+from customer_info_rename as dim_customer 
+left join {{ref('stg_dim_customer_category')}} as dim_customer_category 
+  on dim_customer.customer_category_key = dim_customer_category.customer_category_key
+left join {{ref('stg_dim_buying_group')}} as dim_buying_group 
+  on dim_customer.buying_group_key = dim_buying_group.buying_group_key
