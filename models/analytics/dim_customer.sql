@@ -9,6 +9,11 @@ select
   , cast(customer_name as string ) as customer_name
   , cast(customer_category_id as int ) as customer_category_key
   , cast(buying_group_id as int ) as buying_group_key
+  , case when is_on_credit_hold is true then 'On credit hold'
+         when is_on_credit_hold is false then "Not on credit hold"
+         when is_on_credit_hold is null then "Undefine"
+         else "Invalid" 
+    end as is_on_credit_hold
 from customer_info_source
 )
 select 
