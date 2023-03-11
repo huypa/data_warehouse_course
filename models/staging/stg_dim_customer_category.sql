@@ -4,12 +4,12 @@ with dim_customer_category_source as (
 )
 , dim_customer_category_rename_cast as (
   select
-      cast(customer_category_id as int) as customer_category_key
+    cast(customer_category_id as int) as customer_category_key
     , cast(customer_category_name as string) as customer_category_name
   from dim_customer_category_source
 )
 select 
     customer_category_key
-  , customer_category_name
+    , customer_category_name
 from dim_customer_category_rename_cast
 group by 1,2
