@@ -17,7 +17,6 @@ FROM dim_product_source
   , product_name
   , brand_name 
   , supplier_key
-  , is_chiller_stock
   , case when is_chiller_stock is true then "Chiller_stock"
          when is_chiller_stock is false then "Non chillder stock"
          when is_chiller_stock is null then "Undefined"
@@ -31,7 +30,7 @@ select
   , coalesce(dim_product.brand_name,"Undefined") as brand_name
   , dim_product.is_chiller_stock
   , dim_product.supplier_key
-  , dim_supplier.supplier_name
+  , coalesce(dim_supplier.supplier_name,"Invalid") as supplier_name
 from dim_product_final as dim_product
 left join {{ref('dim_supplier')}} as dim_supplier 
   on dim_product.supplier_key = dim_supplier.supplier_key
