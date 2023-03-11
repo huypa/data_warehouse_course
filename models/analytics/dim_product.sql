@@ -21,7 +21,7 @@ FROM dim_product_source
   , case when is_chiller_stock is true then "Chiller_stock"
          when is_chiller_stock is false then "Non chillder stock"
          else "Unknown"
-    end as is_chiller_stock
+    end as is_chiller_stock -- sua chiller thanh string
 FROM dim_product_source
 )
 select 
