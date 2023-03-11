@@ -23,7 +23,7 @@ FROM dim_product_source
          when is_chiller_stock is null then "Undefined"
          else "Invalid"
     end as is_chiller_stock -- sua chiller thanh string
-FROM dim_product_source
+FROM dim_product_rename_cast
 )
 select 
   dim_product.product_key
