@@ -14,7 +14,8 @@ select
     dim_product.product_key
   , dim_product.product_name
   , dim_product.brand_name
-  , dim_supplier.supplier_key
+  , dim_product.supplier_key
+  , dim_supplier.supplier_name
 from dim_product_rename_cast as dim_product
 left join {{ref('dim_supplier')}} as dim_supplier 
   on dim_product.supplier_key = dim_supplier.supplier_key
