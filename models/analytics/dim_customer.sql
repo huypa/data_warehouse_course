@@ -17,7 +17,7 @@ select
   , dim_customer.customer_category_key
   , dim_customer.buying_group_key
 from customer_info_rename as dim_customer 
-left join {{ref('stg_dim_customer_category')}} as dim_customer_category 
+left join {{ ref('stg_dim_customer_category') }} as dim_customer_category 
   on dim_customer.customer_category_key = dim_customer_category.customer_category_key
-left join {{ref('stg_dim_buying_group')}} as dim_buying_group 
-  on dim_customer.buying_group_key = dim_buying_group.buying_group_key
+--left join {{ref('stg_dim_buying_group')}} as dim_buying_group 
+  --on dim_customer.buying_group_key = dim_buying_group.buying_group_key
