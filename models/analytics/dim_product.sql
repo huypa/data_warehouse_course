@@ -7,7 +7,7 @@ SELECT
   cast(stock_item_id as int ) as product_key
 , cast(stock_item_name as string ) as  product_name
 , cast(brand as string ) as  brand_name 
-, cast(supplier_id as string) as supplier_key
+, cast(supplier_id as int) as supplier_key
 FROM dim_product_source
 )
 select 
