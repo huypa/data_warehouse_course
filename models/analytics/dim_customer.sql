@@ -7,8 +7,8 @@ with customer_info_source as (
 select 
     cast(customer_id as int ) as customer_key
   , cast(customer_name as string ) as customer_name
-  , cast(customer_category_id as ) as customer_category_key
-  , cast(buying_group_id as ) as buying_group_key
+  , cast(customer_category_id as int ) as customer_category_key
+  , cast(buying_group_id as int ) as buying_group_key
 from customer_info_source
 )
 select 
