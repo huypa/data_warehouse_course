@@ -14,4 +14,4 @@ select
   , customer_key
   , picked_by_person_key
 from fact_sales_order_cast_type
-group by 1,2
+group by 1,2,3
