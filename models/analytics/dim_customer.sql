@@ -5,7 +5,7 @@ with customer_info_source as (
 )
 , customer_info_rename as (
 select 
-  cast(customer_id as int ) as customer_key
+    cast(customer_id as int ) as customer_key
   , cast(customer_name as string ) as customer_name
   , cast(customer_category_id as ) as customer_category_key
   , cast(buying_group_id as ) as buying_group_key
