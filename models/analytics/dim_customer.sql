@@ -2,7 +2,6 @@ with customer_info_source as (
   select  
   *
   from `vit-lam-data.wide_world_importers.sales__customers`
-  group by 1,2
 )
 , customer_info_rename as (
 select 
@@ -13,10 +12,10 @@ select
 from customer_info_source
 )
 select 
-  dim.customer.customer_key
-  , dim.customer.customer_name
-  , dim.customer.customer_category_key
-  , dim.customer.buying_group_key
+  dim_customer.customer_key
+  , dim_customer.customer_name
+  , dim_customer.customer_category_key
+  , dim_customer.buying_group_key
 from customer_info_rename as dim_customer 
 left join {{ref('stg_dim_customer_category')}} as dim_customer_category 
   on dim_customer.customer_category_key = dim_customer_category.customer_category_key
