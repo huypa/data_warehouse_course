@@ -12,6 +12,11 @@ union all
 select 
     0 as person_key
   , "Undefined" as full_name
+
+union all 
+select 
+    -1 as person_key
+  , "Error" as full_name
 )
 SELECT 
     person_key
