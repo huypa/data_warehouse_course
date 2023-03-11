@@ -12,6 +12,6 @@ from fact_sales_order_source
 select 
   sales_order_key
   , customer_key
-  , picked_by_person_key
+  , coalesce(picked_by_person_key,0) as picked_by_person_key
 from fact_sales_order_cast_type
 group by 1,2,3
