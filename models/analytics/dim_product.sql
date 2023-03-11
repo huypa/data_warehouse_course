@@ -20,7 +20,8 @@ FROM dim_product_source
   , is_chiller_stock
   , case when is_chiller_stock is true then "Chiller_stock"
          when is_chiller_stock is false then "Non chillder stock"
-         else "Unknown"
+         when is_chiller_stock is null then "Undefined"
+         else "Invalid"
     end as is_chiller_stock -- sua chiller thanh string
 FROM dim_product_source
 )
