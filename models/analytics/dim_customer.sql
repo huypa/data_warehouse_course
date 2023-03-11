@@ -12,7 +12,7 @@ select
 from customer_info_source
 )
 select 
-  dim_customer.customer_key
+    dim_customer.customer_key
   , dim_customer.customer_name
   , dim_customer.customer_category_key
   , dim_customer.buying_group_key
