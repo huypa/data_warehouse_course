@@ -5,14 +5,14 @@ with customer_info_source as (
 )
 , customer_info_rename as (
 select 
-    cast(customer_id as int ) as customer_key
+  cast(customer_id as int ) as customer_key
   , cast(customer_name as string ) as customer_name
   , cast(customer_category_id as int ) as customer_category_key
   , cast(buying_group_id as int ) as buying_group_key
 from customer_info_source
 )
 select 
-    dim_customer.customer_key
+  dim_customer.customer_key
   , dim_customer.customer_name
   , dim_customer.customer_category_key
   , dim_customer.buying_group_key
