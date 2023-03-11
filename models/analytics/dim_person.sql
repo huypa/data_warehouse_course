@@ -8,6 +8,10 @@ SELECT
     cast(person_id  as int ) as person_key
   , cast(full_name as string ) as full_name
 FROM dim_person_source
+union all 
+select 
+    0 as person_key
+  , "Undefined" as full_name
 )
 SELECT 
     person_key
