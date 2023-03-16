@@ -16,4 +16,4 @@ select
   , coalesce(picked_by_person_key,0) as picked_by_person_key
   , order_date
 from fact_sales_order_cast_type
-group by 1,2,3
+group by 1,2,3,4
