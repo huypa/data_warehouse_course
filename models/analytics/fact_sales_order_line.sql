@@ -32,7 +32,7 @@ SELECT
 , coalesce(fact_header.picked_by_person_key,-1) as picked_by_person_key
 , fact_header.order_date
 , fact_header.expected_delivery_date
-, fact_header.is_under_supply_back_ordered
+, fact_header.is_undersupply_backordered
 , fact_line.quantity
 , fact_line.unit_price
 , fact_line.gross_amount
