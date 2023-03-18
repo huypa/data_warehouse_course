@@ -10,7 +10,7 @@ SELECT DISTINCT
 FROM dim_province_source
 )
 , dim_province_final as (
-  SELECT  *
+SELECT  *
 FROM dim_province_rename_cast
 )
 select 
