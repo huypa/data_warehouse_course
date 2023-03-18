@@ -20,7 +20,7 @@ WITH fact_sales_order_line_source AS (
   --, cast((quantity * unit_price) as numeric ) as gross_amount
   , cast(quantity as int) * cast(unit_price as numeric) as gross_amount
   , cast(description as string ) as description 
-  , cast(PickingCompletedWhen as timestamp ) as Picking_completed_when 
+  , cast(Picking_Completed_When as timestamp ) as Picking_completed_when 
   FROM fact_sales_order_line_source
 )
 
