@@ -20,7 +20,7 @@ WITH fact_sales_order_line_source AS (
   --, cast((quantity * unit_price) as numeric ) as gross_amount
   , cast(quantity as int) * cast(unit_price as numeric) as gross_amount
   , cast(description as string ) as description 
-  , cast(PickingCompletedWhen as timestamp ) as Picking_complete_when 
+  , cast(PickingCompletedWhen as timestamp ) as Picking_completed_when 
   FROM fact_sales_order_line_source
 )
 
@@ -37,7 +37,7 @@ SELECT
 , fact_line.unit_price
 , fact_line.gross_amount
 , fact_line.description
-, fact_line.Picking_complete_when
+, fact_line.Picking_completed_when
 FROM fact_sales_order_line_caculated as fact_line
 LEFT JOIN {{ref('stg_fact_sales_order')}} as fact_header
   ON fact_line.sales_order_key = fact_header.sales_order_key
