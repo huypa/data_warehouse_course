@@ -8,6 +8,8 @@ select
   , cast(customer_id as int) as customer_key
   , cast(picked_by_person_id as int) as picked_by_person_key
   , cast(order_date as date ) as order_date
+  , cast(ExpectedDeliveryDate as date ) as expected_delivery_date
+  , cast(IsUndersupplyBackordered as boolean ) as is_under_supply_back_ordered
 from fact_sales_order_source
 )
 select 
@@ -15,5 +17,7 @@ select
   , customer_key
   , coalesce(picked_by_person_key,0) as picked_by_person_key
   , order_date
+  , expected_delivery_date
+  , is_under_supply_back_ordered
 from fact_sales_order_cast_type
-group by 1,2,3,4
+group by 1,2,3,4,5,6

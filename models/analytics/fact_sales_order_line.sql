@@ -5,6 +5,8 @@ WITH fact_sales_order_line_source AS (
   , stock_item_id 
   , quantity 
   , unit_price 
+  , description 
+  , PickingCompletedWhen
   FROM `vit-lam-data.wide_world_importers.sales__order_lines`
 )
 
@@ -17,7 +19,9 @@ WITH fact_sales_order_line_source AS (
   , cast(unit_price as numeric ) as unit_price
   --, cast((quantity * unit_price) as numeric ) as gross_amount
   , cast(quantity as int) * cast(unit_price as numeric) as gross_amount
-  FROM `vit-lam-data.wide_world_importers.sales__order_lines`
+  , cast(description as string ) as description 
+  , cast(PickingCompletedWhen as timestamp ) as Picking_complete_when 
+  FROM fact_sales_order_line_source
 )
 
 SELECT 
@@ -27,9 +31,13 @@ SELECT
 , fact_header.customer_key
 , coalesce(fact_header.picked_by_person_key,-1) as picked_by_person_key
 , fact_header.order_date
+, fact_header.expected_delivery_date
+, fact_header.is_under_supply_back_ordered
 , fact_line.quantity
 , fact_line.unit_price
 , fact_line.gross_amount
+, fact_line.description
+, fact_line.Picking_complete_when
 FROM fact_sales_order_line_caculated as fact_line
 LEFT JOIN {{ref('stg_fact_sales_order')}} as fact_header
   ON fact_line.sales_order_key = fact_header.sales_order_key
