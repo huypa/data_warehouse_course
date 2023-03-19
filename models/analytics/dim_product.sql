@@ -25,12 +25,20 @@ FROM dim_product_source
 FROM dim_product_rename_cast
 )
 select 
-  dim_product.product_key
-  , dim_product.product_name
-  , coalesce(dim_product.brand_name,"Undefined") as brand_name
-  , dim_product.is_chiller_stock
-  , dim_product.supplier_key
-  , coalesce(dim_supplier.supplier_name,"Invalid") as supplier_name
+  dim_product.Product_key
+  , dim_product.Product_name
+  , coalesce(dim_product.brand_name,"Undefined") as Brand_name
+  , dim_product.Is_chiller_stock
+  , dim_product.Supplier_key
+  , coalesce(dim_supplier.supplier_name,"Invalid") as Supplier_name
+  , dim_supplier_category.Supplier_category_key
+  , dim_supplier_category.Supplier_category_name
+  , dim_supplier.Delivery_method_key
+  , dim_supplier.Delivery_method_name 
+  , dim_supplier.Delivery_city_key 
+  , dim_supplier.Delivery_city_name 
+  , dim_supplier.Delivery_province_name
+  , dim_supplier.Delivery_countries_name
 from dim_product_final as dim_product
 left join {{ref('dim_supplier')}} as dim_supplier 
   on dim_product.supplier_key = dim_supplier.supplier_key
