@@ -1,6 +1,6 @@
 with dim__source as (
   select * 
-  from `vit-lam-data.wide_world_importers.application__state_s` 
+  from `vit-lam-data.wide_world_importers.application__state_provinces` 
 )
 , dim__rename_cast as (
 SELECT DISTINCT
