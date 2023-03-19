@@ -8,6 +8,8 @@ SELECT
   , cast(stock_item_name as string ) as  product_name
   , cast(brand as string ) as  brand_name 
   , cast(size as string ) as  size 
+  , cast(unit_package_id as float64) as unit_package_type_key
+  , cast(outer_package_id as float64) as outer_package_type_key
   , cast(supplier_id as int) as supplier_key
   , cast(is_chiller_stock as boolean) as is_chiller_stock
   , cast(unit_price as float64) as unit_price
@@ -41,6 +43,10 @@ select
   , dim_product.Typical_weight_per_unit
   , dim_product.Bar_code
   , dim_product.Lead_time_days
+  , dim_unit_package_type.Unit_Packagetype_key
+  , dim_unit_package_type.Unit_Packagetype_name
+  , dim_outer_package_type.Outer_Packagetype_key
+  , dim_outer_package_type.Outer_Packagetype_name
   , coalesce(dim_supplier.supplier_name,"Invalid") as Supplier_name
   , dim_supplier_category.Supplier_category_key
   , dim_supplier_category.Supplier_category_name
@@ -53,3 +59,7 @@ select
 from dim_product_final as dim_product
 left join {{ref('dim_supplier')}} as dim_supplier 
   on dim_product.supplier_key = dim_supplier.supplier_key
+left join {{ref('stg_dim_package_type')}} as dim_unit_package_type
+  on dim_product.unit_package_type_key = dim_unit_package_type.package_type_key
+left join {{ref('stg_dim_package_type')}} as dim_outer_package_type
+  on dim_product.outer_package_type_key = dim_outer_package_type.package_type_key
