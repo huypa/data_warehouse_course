@@ -23,7 +23,7 @@ FROM dim_supplier_source
 )
 SELECT DISTINCT 
     dim_supplier.Supplier_key
-  , dim_supplier.Supplier_name
+  , coalesce(dim_supplier.supplier_name,"Invalid") as Supplier_name
   , dim_supplier.Bank_account_name
   , dim_supplier.Bank_account_branch
   , dim_supplier.Bank_account_code
