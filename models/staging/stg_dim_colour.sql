@@ -1,16 +1,16 @@
-with dim_package_type_source as (
+with dim_colour_source as (
 SELECT 
   *
-FROM `vit-lam-data.wide_world_importers.warehouse__package_types`
+FROM `vit-lam-data.wide_world_importers.warehouse__colors`
 )
 , dim_package_type_rename_cast as (
 SELECT 
-    cast(package_type_id  as int ) as package_type_key
-  , cast(package_type_name as string ) as package_type_name
-FROM dim_package_type_source
+    cast(colour_id  as int ) as colour_key
+  , cast(colour_name as string ) as colour_name
+FROM dim_colour_source
 )
 SELECT 
-    package_type_key
-  , package_type_name
-FROM dim_package_type_rename_cast
+    colour_key
+  , colour_name
+FROM dim_colour_rename_cast
 GROUP BY 1,2
