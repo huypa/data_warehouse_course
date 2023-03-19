@@ -8,7 +8,7 @@ SELECT
   , cast(stock_item_name as string ) as  product_name
   , cast(brand as string ) as  brand_name 
   , cast(size as string ) as  size 
-  , cast(color_id as int) as color_key
+  , cast(color_id as int) as colour_key
   , cast(unit_package_id as float64) as unit_package_type_key
   , cast(outer_package_id as float64) as outer_package_type_key
   , cast(supplier_id as int) as supplier_key
@@ -22,10 +22,7 @@ FROM dim_product_source
 )
 , dim_product_final as (
   SELECT  
-  product_key
-  , product_name
-  , brand_name 
-  , supplier_key
+  * except(is_chiller_stock)
   , case when is_chiller_stock is true then "Chiller_stock"
          when is_chiller_stock is false then "Non chillder stock"
          when is_chiller_stock is null then "Undefined"
@@ -33,7 +30,7 @@ FROM dim_product_source
     end as is_chiller_stock -- sua chiller thanh string
 FROM dim_product_rename_cast
 )
-select 
+select distinct
   dim_product.Product_key
   , dim_product.Product_name
   , coalesce(dim_product.brand_name,"Undefined") as Brand_name
@@ -44,16 +41,16 @@ select
   , dim_product.Typical_weight_per_unit
   , dim_product.Bar_code
   , dim_product.Lead_time_days
-  , dim_unit_package_type.Unit_Packagetype_key
-  , dim_unit_package_type.Unit_Packagetype_name
-  , dim_outer_package_type.Outer_Packagetype_key
-  , dim_outer_package_type.Outer_Packagetype_name
+  , dim_unit_package_type.package_type_key as Unit_Package_type_key
+  , dim_unit_package_type.package_type_name as Unit_Package_type_name
+  , dim_outer_package_type.package_type_key as Outer_Package_type_key
+  , dim_outer_package_type.package_type_name as Outer_Package_type_name
   , dim_colour.Colour_key
   , dim_colour.Colour_name 
   , dim_supplier.Supplier_key
   , coalesce(dim_supplier.supplier_name,"Invalid") as Supplier_name
-  , dim_supplier_category.Supplier_category_key
-  , dim_supplier_category.Supplier_category_name
+  , dim_supplier.Supplier_category_key
+  , dim_supplier.Supplier_category_name 
   , dim_supplier.Delivery_method_key
   , dim_supplier.Delivery_method_name 
   , dim_supplier.Delivery_city_key 
