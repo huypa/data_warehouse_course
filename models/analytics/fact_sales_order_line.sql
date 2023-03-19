@@ -17,7 +17,6 @@ WITH fact_sales_order_line_source AS (
   , cast(stock_item_id as int) as product_key
   , cast(quantity as int) as quantity
   , cast(unit_price as numeric ) as unit_price
-  --, cast((quantity * unit_price) as numeric ) as gross_amount
   , cast(quantity as int) * cast(unit_price as numeric) as gross_amount
   , cast(description as string ) as description 
   , cast(Picking_Completed_When as timestamp ) as Picking_completed_when 
@@ -25,18 +24,18 @@ WITH fact_sales_order_line_source AS (
 )
 
 SELECT 
-  fact_line.sales_order_line_key
-, fact_line.sales_order_key
-, fact_line.product_key
-, fact_header.customer_key
-, coalesce(fact_header.picked_by_person_key,-1) as picked_by_person_key
-, fact_header.order_date
-, fact_header.expected_delivery_date
-, fact_header.is_undersupply_backordered
-, fact_line.quantity
-, fact_line.unit_price
-, fact_line.gross_amount
-, fact_line.description
+  fact_line.Sales_order_line_key
+, fact_line.Sales_order_key
+, fact_line.Product_key
+, fact_header.Customer_key
+, coalesce(fact_header.picked_by_person_key,-1) as Picked_by_person_key
+, fact_header.Order_date
+, fact_header.Expected_delivery_date
+, fact_header.Is_undersupply_backordered
+, fact_line.Quantity
+, fact_line.Unit_price
+, fact_line.Gross_amount
+, fact_line.Description
 , fact_line.Picking_completed_when
 FROM fact_sales_order_line_caculated as fact_line
 LEFT JOIN {{ref('stg_fact_sales_order')}} as fact_header
