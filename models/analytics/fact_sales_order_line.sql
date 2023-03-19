@@ -32,6 +32,9 @@ SELECT
 , fact_header.Order_date
 , fact_header.Expected_delivery_date
 , fact_header.Is_undersupply_backordered
+, fact_header.salesperson_person_id
+, fact_header.contact_person_id
+, fact_header.customer_purchase_order_number
 , fact_line.Quantity
 , fact_line.Unit_price
 , fact_line.Gross_amount
