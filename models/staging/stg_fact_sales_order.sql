@@ -6,18 +6,24 @@ with fact_sales_order_source as (
 select 
   cast(order_id as int) as sales_order_key
   , cast(customer_id as int) as customer_key
-  , cast(picked_by_person_id as int) as picked_by_person_key
+  , cast(picked_by_person_id as int) as picked_by_person_key   
+  , cast(salesperson_person_id as int) as salesperson_person_id
+  , cast(contact_person_id as int) as contact_person_id
   , cast(order_date as date ) as order_date
-  , cast(expected_delivery_date as timestamp ) as expected_delivery_date
+  , cast(expected_delivery_date as date ) as expected_delivery_date
+  , cast(customer_purchase_order_number as string ) as customer_purchase_order_number	
   , cast(is_undersupply_backordered as boolean ) as is_undersupply_backordered
 from fact_sales_order_source
 )
-select 
+select distinct   
   sales_order_key
   , customer_key
   , coalesce(picked_by_person_key,0) as picked_by_person_key
+  , salesperson_person_id
+  , contact_person_id
+  , customer_purchase_order_number
   , order_date
   , expected_delivery_date
   , is_undersupply_backordered
 from fact_sales_order_cast_type
-group by 1,2,3,4,5,6
+
