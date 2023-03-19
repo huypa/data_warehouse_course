@@ -3,10 +3,10 @@ SELECT
   *
 FROM `vit-lam-data.wide_world_importers.warehouse__colors`
 )
-, dim_package_type_rename_cast as (
+, dim_colour_rename_cast as (
 SELECT 
-    cast(colour_id  as int ) as colour_key
-  , cast(colour_name as string ) as colour_name
+    cast(color_id  as int ) as colour_key
+  , cast(color_name as string ) as colour_name
 FROM dim_colour_source
 )
 SELECT 

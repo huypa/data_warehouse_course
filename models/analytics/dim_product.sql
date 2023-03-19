@@ -8,6 +8,7 @@ SELECT
   , cast(stock_item_name as string ) as  product_name
   , cast(brand as string ) as  brand_name 
   , cast(size as string ) as  size 
+  , cast(color_id as int) as color_key
   , cast(unit_package_id as float64) as unit_package_type_key
   , cast(outer_package_id as float64) as outer_package_type_key
   , cast(supplier_id as int) as supplier_key
@@ -47,6 +48,9 @@ select
   , dim_unit_package_type.Unit_Packagetype_name
   , dim_outer_package_type.Outer_Packagetype_key
   , dim_outer_package_type.Outer_Packagetype_name
+  , dim_colour.Colour_key
+  , dim_colour.Colour_name 
+  , dim_supplier.Supplier_key
   , coalesce(dim_supplier.supplier_name,"Invalid") as Supplier_name
   , dim_supplier_category.Supplier_category_key
   , dim_supplier_category.Supplier_category_name
@@ -63,3 +67,5 @@ left join {{ref('stg_dim_package_type')}} as dim_unit_package_type
   on dim_product.unit_package_type_key = dim_unit_package_type.package_type_key
 left join {{ref('stg_dim_package_type')}} as dim_outer_package_type
   on dim_product.outer_package_type_key = dim_outer_package_type.package_type_key
+left join {{ref('stg_dim_colour')}} as dim_colour
+  on dim_product.colour_key = dim_colour.colour_key
