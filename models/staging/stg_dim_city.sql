@@ -19,5 +19,5 @@ select
   , dim_province.province_name
   , dim_province.countries_name
 from dim_city_final as dim_city
-left join {{ref('dim_state_province')}} as dim_province
+left join {{ref('stg_dim_state_province')}} as dim_province
   on dim_city.province_key = dim_province.province_key

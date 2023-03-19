@@ -18,5 +18,5 @@ select
   , dim_._name
   , dim_countries.countries_name
 from dim__final as dim_
-left join {{ref('dim_countries')}} as dim_countries
+left join {{ref('stg_dim_countries')}} as dim_countries
   on dim_.countries_key = dim_countries.countries_key
