@@ -26,13 +26,10 @@ WITH fact_sales_order_line_source AS (
   FROM fact_sales_order_line_source
 )
 
-SELECT 
-  fact_line.Sales_order_line_key
-, fact_line.Sales_order_key
-, fact_line.Product_key
-, fact_header.Customer_key
-, coalesce(fact_header.picked_by_person_key,-1) as Picked_by_person_key
-, fact_header.Order_date
+SELECT DISTINCT
+-- fact line
+  fact_header.Order_date
+, dim_date.day_of_week_short		
 , fact_header.Expected_delivery_date
 , fact_header.Is_undersupply_backordered
 , fact_header.Salesperson_person_id
@@ -67,6 +64,18 @@ SELECT
 , dim_product.Delivery_method_name as Supplier_delivery_method_name
 , dim_product.Delivery_city_name as Supplier_delivery_city_name
 , dim_product.Delivery_province_name as Supplier_delivery_province_name
+-- dim date trivia
+, dim_date.year_month					
+, dim_date.month					
+, dim_date.year					
+, dim_date.year_number					
+, dim_date.is_week_day_or_weekend		
+-- key
+, fact_line.Sales_order_line_key
+, fact_line.Sales_order_key
+, fact_line.Product_key
+, fact_header.Customer_key
+, coalesce(fact_header.picked_by_person_key,-1) as Picked_by_person_key
 FROM fact_sales_order_line_caculated as fact_line
 LEFT JOIN {{ref('stg_fact_sales_order')}} as fact_header
   ON fact_line.sales_order_key = fact_header.sales_order_key
@@ -74,3 +83,5 @@ LEFT JOIN {{ref('dim_customer')}} as dim_customer
   ON fact_header.customer_key = dim_customer.customer_key
 LEFT JOIN {{ref('dim_product')}} as dim_product
   ON fact_line.Product_key = dim_product.Product_key
+RIGHT JOIN {{ref('dim_date')}} as dim_date
+  ON fact_header.order_date = dim_date.date

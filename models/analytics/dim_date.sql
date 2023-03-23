@@ -12,7 +12,7 @@ FROM (
   SELECT
     *
   FROM
-    UNNEST(GENERATE_DATE_ARRAY('2014-01-01', '2050-01-01', INTERVAL 1 DAY)) AS d )
+    UNNEST(GENERATE_DATE_ARRAY('2014-01-01', date_add(cast(current_date() as date ),interval 1 day), INTERVAL 1 DAY)) AS d )
 )
 , dim_date_generate_enrich as (
   SELECT 
@@ -22,5 +22,5 @@ FROM (
     ELSE 'Invalid' END AS is_week_day_or_weekend
   FROM dim_date_generate
 )
-SELECT * 
+SELECT DISTINCT * 
 FROM dim_date_generate_enrich
