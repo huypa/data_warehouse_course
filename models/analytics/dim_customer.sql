@@ -14,6 +14,7 @@ select
   , cast(buying_group_id as int ) as buying_group_key
   , cast(Primary_Contact_Person_ID as int ) as primary_contact_person_key
   , cast(Alternate_Contact_Person_ID as int ) as alternate_contact_person_key
+  , cast(is_statement_sent as boolean ) as is_statement_sent
   , cast(Delivery_Method_ID as int ) as delivery_method_key
   , cast(Delivery_City_ID as int ) as delivery_city_key
   , case when is_on_credit_hold is true then 'On credit hold'
@@ -34,6 +35,7 @@ select
   , coalesce(dim_customer_category.customer_category_name,"Invalid") as Customer_category_name
   , dim_customer.Buying_group_key
   , coalesce(dim_buying_group.buying_group_name,"Invalid") as Buying_group_name
+  , dim_customer.Is_statement_sent 
   , dim_delivery_method.Delivery_method_key 
   , dim_delivery_method.Delivery_method_name 
   , dim_city.city_key as Delivery_city_key 
