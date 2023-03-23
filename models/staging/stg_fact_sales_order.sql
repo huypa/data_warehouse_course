@@ -13,6 +13,7 @@ select
   , cast(expected_delivery_date as date ) as expected_delivery_date
   , cast(customer_purchase_order_number as string ) as customer_purchase_order_number	
   , cast(is_undersupply_backordered as boolean ) as is_undersupply_backordered
+  , cast(Picking_Completed_When as timestamp ) as Order_picking_completed_when 
 from fact_sales_order_source
 )
 select distinct   
@@ -25,5 +26,6 @@ select distinct   
   , order_date
   , expected_delivery_date
   , is_undersupply_backordered
+  , order_picking_completed_when
 from fact_sales_order_cast_type
 
