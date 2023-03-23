@@ -27,7 +27,7 @@ select distinct   
   , order_date
   , expected_delivery_date
   , case when is_undersupply_backordered is true then "Undersupply backordered"
-              is_undersupply_backordered is true then "No Undersupply backordered"
+         when is_undersupply_backordered is true then "No Undersupply backordered"
     else "Invalid"
     end as is_undersupply_backordered
   , order_picking_completed_when
@@ -37,8 +37,8 @@ select distinct
   sales_order_key
   , customer_key
   , picked_by_person_key
-  , salesperson_person_id
-  , contact_person_id
+  , salesperson_person_key
+  , contact_person_key
   , customer_purchase_order_number
   , order_date
   , expected_delivery_date

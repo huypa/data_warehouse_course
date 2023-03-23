@@ -29,7 +29,7 @@ SELECT
   , coalesce(outer_package_type_key,0) as outer_package_type_key
   , coalesce(supplier_key,0) as supplier_key
   , coalesce(size,'Undefined') as size
-  , coalesce(brand_name,,'Undefined') as brand_name 
+  , coalesce(brand_name,'Undefined') as brand_name 
   , coalesce(product_name,'Undefined') as product_name
   , case when is_chiller_stock is true then "Chiller_stock"
          when is_chiller_stock is false then "Non chillder stock"
@@ -49,19 +49,19 @@ select distinct
   , dim_product.Typical_weight_per_unit
   , dim_product.Bar_code
   , dim_product.Lead_time_days
-  , dim_product.package_type_key as Unit_Package_type_key
+  , dim_product.unit_package_type_key as Unit_Package_type_key
   , coalesce(dim_unit_package_type.package_type_name ,"Invalid") as  Unit_Package_type_name
-  , dim_product.package_type_key as Outer_Package_type_key
+  , dim_product.outer_package_type_key as Outer_Package_type_key
   , coalesce(dim_outer_package_type.package_type_name ,"Invalid") as  Outer_Package_type_name
   , dim_product.Colour_key
   , coalesce(dim_colour.Colour_name ,"Invalid") as Colour_name
   , dim_product.Supplier_key
   , coalesce(dim_supplier.supplier_name,"Invalid") as Supplier_name
-  , coalesce(dim_supplier.Supplier_category_key,"Invalid") as Supplier_category_key
+  , coalesce(dim_supplier.Supplier_category_key,0) as Supplier_category_key
   , coalesce(dim_supplier.Supplier_category_name ,"Invalid") as Supplier_category_name
-  , coalesce(dim_supplier.Delivery_method_key,"Invalid") as Delivery_method_key
+  , coalesce(dim_supplier.Delivery_method_key,0) as Delivery_method_key
   , coalesce(dim_supplier.Delivery_method_name ,"Invalid") as Delivery_method_name
-  , coalesce(dim_supplier.Delivery_city_key ,"Invalid") as Delivery_city_key
+  , coalesce(dim_supplier.Delivery_city_key,0) as Delivery_city_key
   , coalesce(dim_supplier.Delivery_city_name ,"Invalid") as Delivery_city_name
   , coalesce(dim_supplier.Delivery_province_name,"Invalid") as Delivery_province_name
   , coalesce(dim_supplier.Delivery_countries_name,"Invalid") as Delivery_countries_name

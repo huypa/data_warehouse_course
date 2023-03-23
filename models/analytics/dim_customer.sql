@@ -3,7 +3,7 @@ with dim_customer__source as (
   *
   from `vit-lam-data.wide_world_importers.sales__customers`
 )
-, dim_customer__rename as (
+, dim_customer__rename_cast as (
 select distinct 
   cast(customer_id as int ) as customer_key
   , cast(customer_name as string ) as customer_name
@@ -21,6 +21,7 @@ select distinct
          when is_statement_sent is false then "Not on statement sent"
          when is_statement_sent is null then "Undefined"
          else "Invalid" 
+    end as is_statement_sent
   , case when is_on_credit_hold is true then 'On credit hold'
          when is_on_credit_hold is false then "Not on credit hold"
          when is_on_credit_hold is null then "Undefined"
@@ -28,7 +29,7 @@ select distinct
     end as is_on_credit_hold
 from dim_customer__source
 )
-, dim_customer__rename as (
+, dim_customer__final as (
 select distinct 
     coalesce(customer_key,0) as customer_key
   , coalesce(customer_category_key,0) as customer_category_key
@@ -44,7 +45,7 @@ select distinct
   , Standard_Discount_Percentage
   , is_statement_sent
   , is_on_credit_hold
-from dim_customer__rename
+from dim_customer__rename_cast
 )
 select 
   dim_customer.Customer_key
@@ -67,7 +68,7 @@ select
   , coalesce(dim_delivery_city.countries_name,"Invalid") as Delivery_countries_name
   , dim_customer.primary_contact_person_key as Primary_contact_person_key
   , coalesce(dim_primary_contact_person.full_name,"Invalid") as Primary_contact_full_name
-from dim_customer__rename as dim_customer 
+from dim_customer__final as dim_customer 
 left join {{ ref('stg_dim_customer_category') }} as dim_customer_category 
   on dim_customer.customer_category_key = dim_customer_category.customer_category_key
 left join {{ref('stg_dim_buying_group')}} as dim_buying_group 
