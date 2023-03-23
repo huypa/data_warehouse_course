@@ -85,3 +85,4 @@ LEFT JOIN {{ref('dim_product')}} as dim_product
   ON fact_line.Product_key = dim_product.Product_key
 RIGHT JOIN {{ref('dim_date')}} as dim_date
   ON fact_header.order_date = dim_date.date
+--where fact_header.order_date is not null 

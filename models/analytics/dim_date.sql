@@ -12,7 +12,7 @@ FROM (
   SELECT
     *
   FROM
-    UNNEST(GENERATE_DATE_ARRAY('2010-01-01', date_add(cast(current_date() as date ),interval 1 day), INTERVAL 1 DAY)) AS d )
+    UNNEST(GENERATE_DATE_ARRAY('2013-01-01', date_add(cast(current_date() as date ),interval 1 day), INTERVAL 1 DAY)) AS d )
 )
 , dim_date_generate_enrich as (
   SELECT 
