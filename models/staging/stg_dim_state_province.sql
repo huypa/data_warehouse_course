@@ -14,9 +14,9 @@ SELECT  *
 FROM dim_province__rename_cast
 )
 select 
-  dim_province.province_key
-  , dim_province.province_name
-  , dim_countries.countries_name
+  coalesce(dim_province.province_key,0 ) as province_key
+  , coalesce(dim_province.province_name,"Undefined" ) as province_name
+  , coalesce(dim_countries.countries_name,"Undefined" ) as countries_name
 from dim_province__final as dim_province
 left join {{ref('stg_dim_countries')}} as dim_countries
   on dim_province.countries_key = dim_countries.countries_key

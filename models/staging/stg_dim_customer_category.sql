@@ -9,7 +9,7 @@ with dim_customer_category__source as (
   from dim_customer_category__source
 )
 select 
-    customer_category_key
-    , customer_category_name
+    coalesce(customer_category_key,0 ) as customer_category_key
+  , coalesce(customer_category_name,"Undefined" ) as customer_category_name
 from dim_customer_category__rename_cast
 group by 1,2

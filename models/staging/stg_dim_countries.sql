@@ -13,6 +13,6 @@ SELECT  *
 FROM dim_countries__rename_cast
 )
 select 
-  dim_countries.countries_key
-  , dim_countries.countries_name
+    coalesce(dim_countries.countries_key,0 ) as countries_key
+  , coalesce(dim_countries.countries_name,"Undefined" ) as countries_name
 from dim_countries__final as dim_countries

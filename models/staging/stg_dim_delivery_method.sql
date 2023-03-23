@@ -9,7 +9,7 @@ with dim_delivery_source__source as (
   from dim_delivery_source__source
 )
 select 
-    delivery_method_key
-    , delivery_method_name
+  coalesce(delivery_method_key,0 ) as delivery_method_key
+  , coalesce(delivery_method_name,"Undefined" ) as delivery_method_name
 from dim_delivery_source__rename_cast
 group by 1,2

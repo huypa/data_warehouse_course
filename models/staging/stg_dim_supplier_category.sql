@@ -9,7 +9,7 @@ with dim_supplier_categories__source as (
   from dim_supplier_categories__source
 )
 select 
-    supplier_category_key
-    , supplier_category_name
+  coalesce(supplier_category_key,0 ) as supplier_category_key
+  , coalesce(supplier_category_name,"Undefined" ) as supplier_category_name
 from dim_supplier_categories__rename_cast
 group by 1,2

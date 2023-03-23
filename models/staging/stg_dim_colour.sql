@@ -10,7 +10,7 @@ SELECT
 FROM dim_colour__source
 )
 SELECT 
-    colour_key
-  , colour_name
+  coalesce(colour_key,0) as colour_key
+  , coalesce(colour_name,"Undefined") as colour_name
 FROM dim_colour__rename_cast
 GROUP BY 1,2

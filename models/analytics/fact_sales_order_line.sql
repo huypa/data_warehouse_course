@@ -1,6 +1,6 @@
 WITH fact_sales_order_line__source AS (
   SELECT 
-    order_line_id
+  order_line_id
   , order_id 
   , stock_item_id 
   , quantity 
@@ -13,7 +13,7 @@ WITH fact_sales_order_line__source AS (
 
 , fact_sales_order_line__caculated as (
   SELECT 
-    cast(order_line_id as int) as sales_order_line_key
+  cast(order_line_id as int) as sales_order_line_key
   , cast(order_id as int) as sales_order_key
   , cast(stock_item_id as int) as product_key
   , cast(quantity as int) as quantity
@@ -28,12 +28,11 @@ WITH fact_sales_order_line__source AS (
 
 SELECT DISTINCT
 -- fact line
-    fact_header.Order_date
-  --, dim_date.day_of_week_short		
+  fact_header.Order_date	
   , fact_header.Expected_delivery_date
   , fact_header.Is_undersupply_backordered
-  , fact_header.Salesperson_person_id
-  , fact_header.Contact_person_id
+  , fact_header.Salesperson_person_key
+  , fact_header.Contact_person_key
   , fact_header.Customer_purchase_order_number
   , fact_line.Quantity
   , fact_line.Unit_price
@@ -43,6 +42,11 @@ SELECT DISTINCT
   , fact_line.Description
   , fact_line.Line_picking_completed_when
   , fact_header.Order_picking_completed_when
+  , fact_line.Sales_order_line_key
+  , fact_line.Sales_order_key
+  , fact_line.Product_key
+  , fact_header.Customer_key
+  , coalesce(fact_header.picked_by_person_key,-1) as Picked_by_person_key
   -- --- dim customer
   -- , dim_customer.Is_on_credit_Hold
   -- , dim_customer.Account_opened_Date
@@ -70,12 +74,9 @@ SELECT DISTINCT
   -- , dim_date.year					
   -- , dim_date.year_number					
   -- , dim_date.is_week_day_or_weekend		
+  --, dim_date.day_of_week_short	
   -- key
-  , fact_line.Sales_order_line_key
-  , fact_line.Sales_order_key
-  , fact_line.Product_key
-  , fact_header.Customer_key
-  , coalesce(fact_header.picked_by_person_key,-1) as Picked_by_person_key
+
 FROM fact_sales_order_line__caculated as fact_line
 LEFT JOIN {{ref('stg_fact_sales_order')}} as fact_header
   ON fact_line.sales_order_key = fact_header.sales_order_key

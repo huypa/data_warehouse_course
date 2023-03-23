@@ -10,7 +10,7 @@ SELECT
 FROM dim_package_type__source
 )
 SELECT 
-  package_type_key
-  , package_type_name
+  coalesce(package_type_key,0 ) as package_type_key
+  , coalesce(package_type_name,"Undefined" ) as package_type_name
 FROM dim_package_type__rename_cast
 GROUP BY 1,2

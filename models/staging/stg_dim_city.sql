@@ -15,9 +15,9 @@ FROM dim_city__rename_cast
 )
 select 
   dim_city.city_key
-  , coalesce(dim_city.city_name,"Invalid") as city_name
-  , coalesce(dim_province.province_name,"Invalid") as province_name
-  , coalesce(dim_province.countries_name,"Invalid") as countries_name
+  , coalesce(dim_city.city_name,"Undefined") as city_name
+  , coalesce(dim_province.province_name,"Undefined") as province_name
+  , coalesce(dim_province.countries_name,"Undefined") as countries_name
 from dim_city__final as dim_city
 left join {{ref('stg_dim_state_province')}} as dim_province
   on dim_city.province_key = dim_province.province_key
