@@ -1,22 +1,22 @@
-with dim_province_source as (
+with dim_province__source as (
   select * 
   from `vit-lam-data.wide_world_importers.application__state_provinces` 
 )
-, dim_province_rename_cast as (
+, dim_province__rename_cast as (
 SELECT DISTINCT
   cast(state_province_id as int ) as province_key
   , cast(state_province_name as string ) as  province_name
   , cast(country_id as int ) as  countries_key
-FROM dim_province_source
+FROM dim_province__source
 )
-, dim_province_final as (
+, dim_province__final as (
 SELECT  *
-FROM dim_province_rename_cast
+FROM dim_province__rename_cast
 )
 select 
   dim_province.province_key
   , dim_province.province_name
   , dim_countries.countries_name
-from dim_province_final as dim_province
+from dim_province__final as dim_province
 left join {{ref('stg_dim_countries')}} as dim_countries
   on dim_province.countries_key = dim_countries.countries_key

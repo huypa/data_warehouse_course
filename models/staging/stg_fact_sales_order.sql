@@ -1,8 +1,8 @@
-with fact_sales_order_source as (
+with fact_sales_order__source as (
   select *
   from `vit-lam-data.wide_world_importers.sales__orders`
 )
-, fact_sales_order_cast_type as (
+, fact_sales_order__cast_type as (
 select 
   cast(order_id as int) as sales_order_key
   , cast(customer_id as int) as customer_key
@@ -14,7 +14,7 @@ select
   , cast(customer_purchase_order_number as string ) as customer_purchase_order_number	
   , cast(is_undersupply_backordered as boolean ) as is_undersupply_backordered
   , cast(Picking_Completed_When as timestamp ) as Order_picking_completed_when 
-from fact_sales_order_source
+from fact_sales_order__source
 )
 select distinct   
   sales_order_key
@@ -27,5 +27,5 @@ select distinct   
   , expected_delivery_date
   , is_undersupply_backordered
   , order_picking_completed_when
-from fact_sales_order_cast_type
+from fact_sales_order__cast_type
 

@@ -1,4 +1,4 @@
-WITH fact_sales_order_line_source AS (
+WITH fact_sales_order_line__source AS (
   SELECT 
     order_line_id
   , order_id 
@@ -11,7 +11,7 @@ WITH fact_sales_order_line_source AS (
   FROM `vit-lam-data.wide_world_importers.sales__order_lines`
 )
 
-, fact_sales_order_line_caculated as (
+, fact_sales_order_line__caculated as (
   SELECT 
     cast(order_line_id as int) as sales_order_line_key
   , cast(order_id as int) as sales_order_key
@@ -23,7 +23,7 @@ WITH fact_sales_order_line_source AS (
   , cast(quantity as int) * cast(unit_price as numeric) * (1-tax_rate/100) as net_amount
   , cast(description as string ) as description 
   , cast(Picking_Completed_When as timestamp ) as Line_picking_completed_when 
-  FROM fact_sales_order_line_source
+  FROM fact_sales_order_line__source
 )
 
 SELECT DISTINCT
@@ -76,7 +76,7 @@ SELECT DISTINCT
   , fact_line.Product_key
   , fact_header.Customer_key
   , coalesce(fact_header.picked_by_person_key,-1) as Picked_by_person_key
-FROM fact_sales_order_line_caculated as fact_line
+FROM fact_sales_order_line__caculated as fact_line
 LEFT JOIN {{ref('stg_fact_sales_order')}} as fact_header
   ON fact_line.sales_order_key = fact_header.sales_order_key
 -- LEFT JOIN {{ref('dim_customer')}} as dim_customer

@@ -1,15 +1,15 @@
-with dim_supplier_categories_source as (
+with dim_supplier_categories__source as (
   select * 
   from `vit-lam-data.wide_world_importers.purchasing__supplier_categories`
 )
-, dim_supplier_categories_rename_cast as (
+, dim_supplier_categories__rename_cast as (
   select
     cast(supplier_category_id as int) as supplier_category_key
     , cast(supplier_category_name as string) as supplier_category_name
-  from dim_supplier_categories_source
+  from dim_supplier_categories__source
 )
 select 
     supplier_category_key
     , supplier_category_name
-from dim_supplier_categories_rename_cast
+from dim_supplier_categories__rename_cast
 group by 1,2
