@@ -8,6 +8,7 @@ select
   cast(customer_id as int ) as customer_key
   , cast(customer_name as string ) as customer_name
   , cast(phone_number as string ) as phone_number
+  , cast(bill_to_customer_id as int) as bill_to_customer_id
   , cast(account_opened_date as date ) as Account_Opened_Date
   , cast(standard_discount_percentage as numeric ) as Standard_Discount_Percentage
   , cast(customer_category_id as int ) as customer_category_key
@@ -28,6 +29,7 @@ select
   dim_customer.Customer_key
   , dim_customer.Customer_name 
   , dim_customer.Phone_number
+  , dim_customer.Bill_to_customer_id
   , dim_customer.Is_on_credit_hold  
   , dim_customer.Account_Opened_Date 
   , dim_customer.Standard_Discount_Percentage 
