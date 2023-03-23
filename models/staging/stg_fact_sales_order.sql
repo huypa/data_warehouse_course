@@ -27,8 +27,8 @@ select distinct   
   , order_date
   , expected_delivery_date
   , case when is_undersupply_backordered is true then "Undersupply backordered"
-         when is_undersupply_backordered is true then "No Undersupply backordered"
-    else "Invalid"
+         when is_undersupply_backordered is false then "No Undersupply backordered"
+    else "Undefined"
     end as is_undersupply_backordered
   , order_picking_completed_when
 from fact_sales_order__cast_type )

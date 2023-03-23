@@ -57,11 +57,11 @@ select distinct
   , coalesce(dim_colour.Colour_name ,"Invalid") as Colour_name
   , dim_product.Supplier_key
   , coalesce(dim_supplier.supplier_name,"Invalid") as Supplier_name
-  , coalesce(dim_supplier.Supplier_category_key,0) as Supplier_category_key
+  , coalesce(dim_supplier.Supplier_category_key,-1) as Supplier_category_key
   , coalesce(dim_supplier.Supplier_category_name ,"Invalid") as Supplier_category_name
-  , coalesce(dim_supplier.Delivery_method_key,0) as Delivery_method_key
+  , coalesce(dim_supplier.Delivery_method_key,-1) as Delivery_method_key
   , coalesce(dim_supplier.Delivery_method_name ,"Invalid") as Delivery_method_name
-  , coalesce(dim_supplier.Delivery_city_key,0) as Delivery_city_key
+  , coalesce(dim_supplier.Delivery_city_key,-1) as Delivery_city_key
   , coalesce(dim_supplier.Delivery_city_name ,"Invalid") as Delivery_city_name
   , coalesce(dim_supplier.Delivery_province_name,"Invalid") as Delivery_province_name
   , coalesce(dim_supplier.Delivery_countries_name,"Invalid") as Delivery_countries_name
