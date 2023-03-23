@@ -30,8 +30,8 @@ SELECT DISTINCT
 -- fact line
   fact_header.Order_date	
   , fact_header.Expected_delivery_date
-  , fact_header.Is_undersupply_backordered
-  , fact_header.Customer_purchase_order_number
+  , coalesce(fact_header.Is_undersupply_backordered,"Invalid") as Is_undersupply_backordered
+  , coalesce(fact_header.Customer_purchase_order_number,"Invalid") as Customer_purchase_order_number
   , fact_line.Quantity
   , fact_line.Unit_price
   , fact_line.Gross_amount
