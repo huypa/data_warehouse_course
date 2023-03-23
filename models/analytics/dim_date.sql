@@ -3,7 +3,6 @@ SELECT
   d AS date,
   FORMAT_DATE('%A', d) AS day_of_week,
   FORMAT_DATE('%a', d) AS day_of_week_short,
-  
   date_trunc(d,month) as year_month,
   EXTRACT(month FROM d) AS month,
   date_trunc(d,year) as year,

@@ -29,7 +29,7 @@ WITH fact_sales_order_line_source AS (
 SELECT DISTINCT
 -- fact line
     fact_header.Order_date
-  , dim_date.day_of_week_short		
+  --, dim_date.day_of_week_short		
   , fact_header.Expected_delivery_date
   , fact_header.Is_undersupply_backordered
   , fact_header.Salesperson_person_id
@@ -43,33 +43,33 @@ SELECT DISTINCT
   , fact_line.Description
   , fact_line.Line_picking_completed_when
   , fact_header.Order_picking_completed_when
-  --- dim customer
-  , dim_customer.Is_on_credit_Hold
-  , dim_customer.Account_opened_Date
-  , dim_customer.Standard_discount_percentage
-  , dim_customer.Customer_category_name
-  , dim_customer.Buying_group_name
-  , dim_customer.Delivery_method_name as Cus_delivery_method_name
-  , dim_customer.Delivery_city_name as Cus_delivery_city_name
-  , dim_customer.Delivery_province_name as Cus_delivery_province_name
-  --- dim product 
-  , dim_product.Product_name
-  , dim_product.Brand_name
-  , dim_product.Size
-  , dim_product.Is_chiller_stock
-  , dim_product.Bar_code
-  , dim_product.Unit_package_type_name
-  , dim_product.Outer_package_type_name
-  , dim_product.Supplier_name
-  , dim_product.Delivery_method_name as Supplier_delivery_method_name
-  , dim_product.Delivery_city_name as Supplier_delivery_city_name
-  , dim_product.Delivery_province_name as Supplier_delivery_province_name
-  -- dim date trivia
-  , dim_date.year_month					
-  , dim_date.month					
-  , dim_date.year					
-  , dim_date.year_number					
-  , dim_date.is_week_day_or_weekend		
+  -- --- dim customer
+  -- , dim_customer.Is_on_credit_Hold
+  -- , dim_customer.Account_opened_Date
+  -- , dim_customer.Standard_discount_percentage
+  -- , dim_customer.Customer_category_name
+  -- , dim_customer.Buying_group_name
+  -- , dim_customer.Delivery_method_name as Cus_delivery_method_name
+  -- , dim_customer.Delivery_city_name as Cus_delivery_city_name
+  -- , dim_customer.Delivery_province_name as Cus_delivery_province_name
+  -- --- dim product 
+  -- , dim_product.Product_name
+  -- , dim_product.Brand_name
+  -- , dim_product.Size
+  -- , dim_product.Is_chiller_stock
+  -- , dim_product.Bar_code
+  -- , dim_product.Unit_package_type_name
+  -- , dim_product.Outer_package_type_name
+  -- , dim_product.Supplier_name
+  -- , dim_product.Delivery_method_name as Supplier_delivery_method_name
+  -- , dim_product.Delivery_city_name as Supplier_delivery_city_name
+  -- , dim_product.Delivery_province_name as Supplier_delivery_province_name
+  -- -- dim date trivia
+  -- , dim_date.year_month					
+  -- , dim_date.month					
+  -- , dim_date.year					
+  -- , dim_date.year_number					
+  -- , dim_date.is_week_day_or_weekend		
   -- key
   , fact_line.Sales_order_line_key
   , fact_line.Sales_order_key
@@ -79,11 +79,11 @@ SELECT DISTINCT
 FROM fact_sales_order_line_caculated as fact_line
 LEFT JOIN {{ref('stg_fact_sales_order')}} as fact_header
   ON fact_line.sales_order_key = fact_header.sales_order_key
-LEFT JOIN {{ref('dim_customer')}} as dim_customer
-  ON fact_header.customer_key = dim_customer.customer_key
-LEFT JOIN {{ref('dim_product')}} as dim_product
-  ON fact_line.Product_key = dim_product.Product_key
-RIGHT JOIN {{ref('dim_date')}} as dim_date
-  ON fact_header.order_date = dim_date.date
+-- LEFT JOIN {{ref('dim_customer')}} as dim_customer
+--   ON fact_header.customer_key = dim_customer.customer_key
+-- LEFT JOIN {{ref('dim_product')}} as dim_product
+--   ON fact_line.Product_key = dim_product.Product_key
+-- RIGHT JOIN {{ref('dim_date')}} as dim_date
+--   ON fact_header.order_date = dim_date.date
  
---where fact_header.order_date is not null 
+--where fact_header.order_date is not null,
