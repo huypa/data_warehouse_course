@@ -3,6 +3,7 @@ WITH fact_sales_order_line__source AS (
   order_line_id
   , order_id 
   , stock_item_id 
+  , package_type_id
   , quantity 
   , unit_price 
   , tax_rate
@@ -16,6 +17,7 @@ WITH fact_sales_order_line__source AS (
   cast(order_line_id as int) as sales_order_line_key
   , cast(order_id as int) as sales_order_key
   , cast(stock_item_id as int) as product_key
+  , cast(package_type_id as int) as package_type_key
   , cast(quantity as int) as quantity
   , cast(unit_price as numeric ) as unit_price
   , cast(quantity as int) * cast(unit_price as numeric) as gross_amount
@@ -32,6 +34,10 @@ SELECT DISTINCT
   , fact_header.Expected_delivery_date
   , coalesce(fact_header.Is_undersupply_backordered,"Invalid") as Is_undersupply_backordered
   , coalesce(fact_header.Customer_purchase_order_number,"Invalid") as Customer_purchase_order_number
+  , FARM_FINGERPRINT(concat(coalesce(fact_header.Is_undersupply_backordered,"Invalid")
+    ,','
+    ,fact_line.package_type_key
+  )) as sales_order_line_indicator_key
   , fact_line.Quantity
   , fact_line.Unit_price
   , fact_line.Gross_amount
@@ -43,6 +49,7 @@ SELECT DISTINCT
   , fact_line.Sales_order_line_key
   , fact_line.Sales_order_key
   , fact_line.Product_key
+  , fact_line.Package_type_key
   , fact_header.Customer_key
   , coalesce(fact_header.picked_by_person_key,-1) as Picked_by_person_key
   , fact_header.Salesperson_person_key
