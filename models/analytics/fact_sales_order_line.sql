@@ -32,7 +32,7 @@ SELECT DISTINCT
 -- fact line
   fact_header.Order_date	
   , fact_header.Expected_delivery_date
-  , coalesce(fact_header.Is_undersupply_backordered,"Invalid") as Is_undersupply_backordered
+  --, coalesce(fact_header.Is_undersupply_backordered,"Invalid") as Is_undersupply_backordered
   , coalesce(fact_header.Customer_purchase_order_number,"Invalid") as Customer_purchase_order_number
   , FARM_FINGERPRINT(concat(coalesce(fact_header.Is_undersupply_backordered,"Invalid")
     ,','
@@ -49,7 +49,7 @@ SELECT DISTINCT
   , fact_line.Sales_order_line_key
   , fact_line.Sales_order_key
   , fact_line.Product_key
-  , fact_line.Package_type_key
+ -- , fact_line.Package_type_key
   , fact_header.Customer_key
   , coalesce(fact_header.picked_by_person_key,-1) as Picked_by_person_key
   , fact_header.Salesperson_person_key
