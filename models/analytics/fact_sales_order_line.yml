@@ -35,6 +35,13 @@ models:
               min_value: "'2013-01-01'"
               max_value: 'Current_date'
 
+      - name: quantity
+        tests: 
+          - not_null
+          - custom_test_equal_sum: 
+              compare_model: "`vit-lam-data.wide_world_importers.sales__order_lines`"
+              compare_column: "quantity"
+
 
 
 
