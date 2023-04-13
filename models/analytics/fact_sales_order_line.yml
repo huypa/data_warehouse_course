@@ -12,7 +12,7 @@ models:
         tests: 
           - not_null
           - relationships: 
-            to: ref('dim_sales_order_line_indicator')
-            id: sales_order_line_indicator_key
+              to: ref('dim_sales_order_line_indicator')
+              field: sales_order_line_indicator_key
 
 
