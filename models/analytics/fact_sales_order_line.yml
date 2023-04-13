@@ -22,11 +22,11 @@ models:
               to: ref('stg_fact_sales_order')
               field: sales_order_key
 
-      - name: Order_date
+      - name: order_date
         tests: 
           - not_null
           - dbt_utils.accepted_range: 
-              min_value: '"2013-01-01"'
+              min_value: "'2013-01-01'"
               max_value: 'Current_date'
 
 
