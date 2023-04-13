@@ -4,5 +4,5 @@ models:
   - name: dim_product
     columns: 
       - name: product_key
-        test: 
+        tests: 
           - not_null
