@@ -22,8 +22,6 @@ WITH Fact_purchase_order__source AS (
 )
 
 SELECT DISTINCT
-
-
   fact_purchase.Order_date
   , fact_purchase.Expected_Delivery_Date
   , fact_purchase.Is_Order_Finalized
