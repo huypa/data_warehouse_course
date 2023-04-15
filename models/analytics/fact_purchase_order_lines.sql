@@ -43,7 +43,7 @@ SELECT DISTINCT
   , coalesce(fact_purchase_order.Order_date,'Invalid') as Order_date
   , coalesce(fact_purchase_order.Delivery_method_name,'Invalid') as Delivery_method_name
   , coalesce(fact_purchase_order.Supplier_name,'Invalid') as Supplier_name
-  , dim_package_type.Package_type_name
+  , coalesce(dim_package_type.Package_type_name, 'Invalid') as Package_type_name
   , coalesce(fact_purchase_order.Transaction_type_name,'Invalid') as Transaction_type_name
   , coalesce(fact_purchase_order.Payment_method_name,'Invalid') as Payment_method_name
   , coalesce(fact_purchase_order.Contact_person_name,'Invalid') as Contact_person_name
