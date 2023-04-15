@@ -23,26 +23,43 @@ WITH Fact_purchase_order_lines__source AS (
   , cast (Fact_purchase_order_lines.is_order_line_finalized as boolean ) as Is_order_line_finalized 
   FROM Fact_purchase_order_lines__source AS Fact_purchase_order_lines
 )
-
+, Fact_purchase_order_lines__final as (
+  SELECT 
+  Purchase_Order_line_key
+  , Purchase_order_key
+  , Package_type_key
+  , product_key
+  , Expected_Unit_Price_Per_Outer
+  , Last_Receipt_date
+  , Received_Outers
+  , case when Is_order_line_finalized is true then 'Is finalized'
+         when Is_order_line_finalized is false then 'Is not finalized'
+    else 'Undefined' end as Is_order_line_finalized
+FROM Fact_purchase_order_lines__recast
+)
 SELECT DISTINCT
-  fact_purchase_order.Order_date
+  fact_purchase_lines.Purchase_Order_line_key
+  , fact_purchase_lines.Purchase_order_key
+  , fact_purchase_order.Order_date
+  , dim_product.Product_name
+  , dim_product.Brand_name
+  , dim_product.Colour_name
+  , dim_product.Size
   , fact_purchase_order.Delivery_method_name
   , fact_purchase_order.Supplier_name
+  , dim_package_type.Package_type_name
   , fact_purchase_order.Transaction_type_name
   , fact_purchase_order.Payment_method_name
   , fact_purchase_order.Contact_person_name
-  , fact_purchase_order.Expected_Delivery_Date
-  , fact_purchase_order.Is_Order_Finalized
-  , fact_purchase_lines.Expected_Unit_Price_Per_Outer
-  , fact_purchase_lines.Last_Receipt_date
-  , fact_purchase_lines.Received_Outers
+  , fact_purchase_order.Is_order_finalized
   , fact_purchase_lines.Is_order_line_finalized
-  , dim_package_type.Package_type_name
-  , fact_purchase_lines.Purchase_Order_line_key
-  , fact_purchase_lines.Purchase_order_key
+  , fact_purchase_lines.Received_Outers
+  , fact_purchase_lines.Expected_Unit_Price_Per_Outer
+  , fact_purchase_order.Expected_Delivery_Date
+  , fact_purchase_lines.Last_Receipt_date
   , fact_purchase_lines.Package_type_key
   , fact_purchase_lines.product_key
-FROM Fact_purchase_order_lines__recast as fact_purchase_lines
+FROM Fact_purchase_order_lines__final as fact_purchase_lines
 LEFT JOIN {{ref('stg_dim_package_type')}} as Dim_package_type
     ON fact_purchase_lines.package_type_key = Dim_package_type.package_type_key
 LEFT JOIN {{ref('dim_product')}} as dim_product
