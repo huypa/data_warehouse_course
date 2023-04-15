@@ -58,7 +58,5 @@ SELECT DISTINCT
 FROM Fact_purchase_order_lines__final as fact_purchase_lines
 LEFT JOIN {{ref('stg_dim_package_type')}} as Dim_package_type
     ON fact_purchase_lines.package_type_key = Dim_package_type.package_type_key
---LEFT JOIN {{ref('dim_product')}} as dim_product
---    ON fact_purchase_lines.Product_key = dim_product.Product_key
 LEFT JOIN {{ref('fact_purchase_order')}} as Fact_purchase_order
     ON fact_purchase_lines.Purchase_order_key = Fact_purchase_order.Purchase_order_key
