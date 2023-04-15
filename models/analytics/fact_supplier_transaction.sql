@@ -10,7 +10,7 @@ WITH Fact_supplier_transaction__source AS (
   FROM `vit-lam-data.wide_world_importers.purchasing__supplier_transactions` as Fact_supplier_transaction
 )
 
-, Fact_supplier_transaction__caculated as (
+, Fact_supplier_transaction__recast as (
   SELECT 
   cast( Fact_supplier_transaction.Supplier_Transaction_id as int ) as Supplier_Transaction_key
   , cast( Fact_supplier_transaction.Transaction_type_id as int ) as Transaction_type_key
@@ -24,17 +24,18 @@ WITH Fact_supplier_transaction__source AS (
 
 SELECT DISTINCT
 -- fact line
-  fact_supplier.Supplier_Transaction_key
-  , fact_supplier.Transaction_type_key
-  , fact_supplier.Payment_method_key
-  , fact_supplier.Supplier_key
-  , fact_supplier.Purchase_order_key
-  , fact_supplier.Is_Finalized
+
+  fact_supplier.Is_Finalized
   , fact_supplier.Finalization_Date
   , dim_Supplier.Supplier_name
   , dim_transaction_types.Transaction_type_name
   , dim_payment_method.Payment_method_name
-FROM Fact_supplier_transaction__caculated as fact_supplier
+  , fact_supplier.Supplier_Transaction_key
+  , fact_supplier.Transaction_type_key
+  , fact_supplier.Payment_method_key
+  , fact_supplier.Supplier_key
+  , fact_supplier.Purchase_order_key
+FROM Fact_supplier_transaction__recast as fact_supplier
 LEFT JOIN {{ref('stg_dim_payment_method')}} as dim_payment_method
     ON fact_supplier.Payment_method_key = dim_payment_method.Payment_method_key
 LEFT JOIN {{ref('stg_dim_transaction_types')}} as dim_transaction_types
