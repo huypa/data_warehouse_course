@@ -41,10 +41,10 @@ SELECT DISTINCT
   fact_purchase_lines.Purchase_Order_line_key
   , fact_purchase_lines.Purchase_order_key
   , fact_purchase_order.Order_date
-  , dim_product.Product_name
-  , dim_product.Brand_name
-  , dim_product.Colour_name
-  , dim_product.Size
+--  , dim_product.Product_name
+--  , dim_product.Brand_name
+--  , dim_product.Colour_name
+--  , dim_product.Size
   , fact_purchase_order.Delivery_method_name
   , fact_purchase_order.Supplier_name
   , dim_package_type.Package_type_name
@@ -62,7 +62,7 @@ SELECT DISTINCT
 FROM Fact_purchase_order_lines__final as fact_purchase_lines
 LEFT JOIN {{ref('stg_dim_package_type')}} as Dim_package_type
     ON fact_purchase_lines.package_type_key = Dim_package_type.package_type_key
-LEFT JOIN {{ref('dim_product')}} as dim_product
-    ON fact_purchase_lines.Product_key = dim_product.Product_key
+--LEFT JOIN {{ref('dim_product')}} as dim_product
+--    ON fact_purchase_lines.Product_key = dim_product.Product_key
 LEFT JOIN {{ref('fact_purchase_order')}} as Fact_purchase_order
     ON fact_purchase_lines.Purchase_order_key = Fact_purchase_order.Purchase_order_key
