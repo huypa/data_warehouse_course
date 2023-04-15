@@ -40,22 +40,18 @@ FROM Fact_purchase_order_lines__recast
 SELECT DISTINCT
   fact_purchase_lines.Purchase_Order_line_key
   , fact_purchase_lines.Purchase_order_key
-  , fact_purchase_order.Order_date
---  , dim_product.Product_name
---  , dim_product.Brand_name
---  , dim_product.Colour_name
---  , dim_product.Size
-  , fact_purchase_order.Delivery_method_name
-  , fact_purchase_order.Supplier_name
+  , coalesce(fact_purchase_order.Order_date,'Invalid') as Order_date
+  , coalesce(fact_purchase_order.Delivery_method_name,'Invalid') as Delivery_method_name
+  , coalesce(fact_purchase_order.Supplier_name,'Invalid') as Supplier_name
   , dim_package_type.Package_type_name
-  , fact_purchase_order.Transaction_type_name
-  , fact_purchase_order.Payment_method_name
-  , fact_purchase_order.Contact_person_name
-  , fact_purchase_order.Is_order_finalized
+  , coalesce(fact_purchase_order.Transaction_type_name,'Invalid') as Transaction_type_name
+  , coalesce(fact_purchase_order.Payment_method_name,'Invalid') as Payment_method_name
+  , coalesce(fact_purchase_order.Contact_person_name,'Invalid') as Contact_person_name
+  , coalesce(fact_purchase_order.Is_order_finalized,'Invalid') as Is_order_finalized
   , fact_purchase_lines.Is_order_line_finalized
   , fact_purchase_lines.Received_Outers
   , fact_purchase_lines.Expected_Unit_Price_Per_Outer
-  , fact_purchase_order.Expected_Delivery_Date
+  , coalesce(fact_purchase_order.Expected_Delivery_Date,'Invalid') as Expected_Delivery_Date
   , fact_purchase_lines.Last_Receipt_date
   , fact_purchase_lines.Package_type_key
   , fact_purchase_lines.product_key
