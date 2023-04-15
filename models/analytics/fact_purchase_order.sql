@@ -31,7 +31,7 @@ SELECT DISTINCT
   , Fact_supplier_transaction.Supplier_name
   , Fact_supplier_transaction.Transaction_type_name
   , Fact_supplier_transaction.Payment_method_name
-  , dim_contact_person.Person_name AS Contact_person_name
+  , dim_contact_person.full_name AS Contact_person_name
   , fact_purchase.Purchase_order_key
   , fact_purchase.Delivery_method_key
   , fact_purchase.Contact_person_key
@@ -39,6 +39,6 @@ FROM Fact_purchase_order__recast as fact_purchase
 LEFT JOIN {{ref('dim_person')}} as dim_contact_person
     ON fact_purchase.contact_person_key = dim_contact_person.Person_key
 LEFT JOIN {{ref('fact_supplier_transaction')}} as fact_supplier_transaction
-    ON fact_purchase.Purchase_order_key = dim_transaction_types.Purchase_order_key
+    ON fact_purchase.Purchase_order_key = fact_supplier_transaction.Purchase_order_key
 LEFT JOIN {{ref('stg_dim_delivery_method')}} as Dim_delivery_method
-    ON fact_purchase.Delivery_method_key = dim_supplier.Delivery_method_key
+    ON fact_purchase.Delivery_method_key = Dim_delivery_method.Delivery_method_key
