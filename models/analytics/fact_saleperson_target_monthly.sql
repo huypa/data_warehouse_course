@@ -3,8 +3,8 @@ with fact_sale_order_line_source as (
     order_date
     , Salesperson_person_key
     , Net_amount
-  from 'learn-dbt-379208.wide_world_importers_dwh.fact_purchase_order_lines'
-)
+  from {{ref('fact_sales_order_line')}} 
+) 
 , fact_sale_order_line_recast as (
   select 
     date_trunc (order_date,month) as year_month
