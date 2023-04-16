@@ -42,9 +42,9 @@ with fact_sale_order_line_source as (
            when Actual_revenue / Target_revenue < 0.8 then 'Not Achieved'
       else 'Invalid' 
       end as Is_achieved 
-    , case when (Target_revenue is null or  salesperson_person_key is null ) then 'Invalid Saleperson'
-      else 'Valid Saleperson'
-      end as Is_valid_saleperson
+    , case when (Target_revenue is null or  salesperson_person_key is null ) then 'Invalid Saleperson Data'
+      else 'Valid Saleperson Data'
+      end as Is_valid_saleperson_data
   from fact_revenue_by_sale_person_with_target_monthly
 )
 select *
