@@ -22,13 +22,13 @@ with fact_sale_order_line_source as (
 )
 , fact_revenue_by_sale_person_with_target_monthly as (
   select 
-    coalesce(fact_actual.year_month,fact_header.year_month ) as year_month
+    coalesce(fact_actual.year_month,fact_target.year_month ) as year_month
     , fact_actual.salesperson_person_key
     , fact_actual.Actual_revenue
     , fact_target.Target_revenue
   from fact_revenue_by_sale_person_monthly fact_actual
   full outer join {{ref('stg_fact_sale_target_by_person')}} as fact_target 
-    on fact_actual.year_month = fact_header.year_month 
+    on fact_actual.year_month = fact_target.year_month 
     and fact_actual.salesperson_person_key = fact_target.salesperson_person_key
 ) 
 , fact_revenue_by_sale_person_with_target_monthly_final as (
