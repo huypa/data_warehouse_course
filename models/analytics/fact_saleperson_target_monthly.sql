@@ -39,7 +39,7 @@ with fact_sale_order_line_source as (
     , Target_revenue
     , round(Actual_revenue * 100 / Target_revenue , 1 ) as Achievement_pct
     , case when Actual_revenue / Target_revenue > 0.8 then 'Achieved'
-          when Actual_revenue / Target_revenue < 0.8 then 'Not Achieved'
+           when Actual_revenue / Target_revenue < 0.8 then 'Not Achieved'
       else 'Invalid' 
       end as Is_achieved 
     , case when (Target_revenue is null or  salesperson_person_key is null ) then 'Invalid Saleperson'
