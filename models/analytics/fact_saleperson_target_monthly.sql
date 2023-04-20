@@ -24,7 +24,7 @@ with fact_sale_order_line__source as (
 , fact_saleperson_target_monthly_full_join as (
   select 
     coalesce(fact_actual.year_month,fact_target.year_month ) as year_month
-    , fact_actual.salesperson_person_key
+    , coalesce(fact_actual.salesperson_person_key,fact_target.salesperson_person_key) as salesperson_person_key
     , fact_actual.Actual_revenue
     , fact_target.Target_revenue
   from fact_saleperson_target_monthly_actual fact_actual
@@ -39,8 +39,8 @@ with fact_sale_order_line__source as (
     , Actual_revenue
     , Target_revenue
     , round(Actual_revenue * 100 / Target_revenue , 1 ) as Achievement_pct
-    , case when Actual_revenue / Target_revenue > 0.8 then 'Achieved'
-           when Actual_revenue / Target_revenue < 0.8 then 'Not Achieved'
+    , case when Actual_revenue / nullif(Target_revenue,0) > 0.8 then 'Achieved'
+           when Actual_revenue / nullif(Target_revenue,0) < 0.8 then 'Not Achieved'
       else 'Invalid' 
       end as Is_achieved 
     , case when (Target_revenue is null or  salesperson_person_key is null ) then 'Invalid Saleperson Data'
