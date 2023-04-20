@@ -47,5 +47,12 @@ with fact_sale_order_line_source as (
       end as Is_valid_saleperson_data
   from fact_revenue_by_sale_person_with_target_monthly
 )
-select *
+select 
+    year_month
+    , salesperson_person_key
+    , Actual_revenue
+    , Target_revenue
+    , Achievement_pct
+    , Is_achieved 
+    , Is_valid_saleperson_data
 from fact_revenue_by_sale_person_with_target_monthly_final
