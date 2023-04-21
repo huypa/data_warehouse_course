@@ -74,40 +74,40 @@ WITH
     from fact_customer_snapshot__with_percentile_and_LM
 )
 , fact_customer_snapshot__caculate_L12 as (
-  select
-      A.Year_month
-      , A.Customer_key
-      , A.Sales_amount 
-      , A.LM_sales_amount
-      , A.Monetary_segment
-      , A.Lifetime_sales_amount
-      , B.Sales_amount AS Previous_Sales_amount
-      , A.Lifetime_monetary_segment
-    -- , B.Year_month AS Previous_Year_month
-    --  , DATE_DIFF(A.year_month,B.year_month,month) AS DIFF
-      from fact_customer_snapshot__segment AS A
-      left join fact_customer_snapshot__segment AS B ON A.Customer_key = B.Customer_key AND DATE_DIFF(A.year_month,B.year_month,month) between 0 and 12
+    select
+        A.Year_month
+        , A.Customer_key
+        , A.Sales_amount 
+        , A.LM_sales_amount
+        , A.Monetary_segment
+        , A.Lifetime_sales_amount
+        , B.Sales_amount AS Previous_Sales_amount
+        , A.Lifetime_monetary_segment
+      -- , B.Year_month AS Previous_Year_month
+      --  , DATE_DIFF(A.year_month,B.year_month,month) AS DIFF
+    from fact_customer_snapshot__segment AS A
+    left join fact_customer_snapshot__segment AS B ON A.Customer_key = B.Customer_key AND DATE_DIFF(A.year_month,B.year_month,month) between 0 and 12
 )
 , fact_customer_snapshot as (
-select 
-      Year_month
-      , Customer_key
-      , Sales_amount 
-      , Monetary_segment
-      , LM_sales_amount
-      , Lifetime_sales_amount
-      , Lifetime_monetary_segment
-      , sum(Previous_Sales_amount) as L12M_sales_amount
-from fact_customer_snapshot__caculate_L12 as A
-group by 1,2,3,4,5,6,7
+    select 
+        Year_month
+        , Customer_key
+        , Sales_amount 
+        , Monetary_segment
+        , LM_sales_amount
+        , Lifetime_sales_amount
+        , Lifetime_monetary_segment
+        , sum(Previous_Sales_amount) as L12M_sales_amount
+    from fact_customer_snapshot__caculate_L12 as A
+    group by 1,2,3,4,5,6,7
 )
 select 
-  Year_month
-  , Customer_key
-  , Sales_amount 
-  , Monetary_segment
-  , LM_sales_amount
-  , Lifetime_sales_amount
-  , Lifetime_monetary_segment 
-  , L12M_sales_amount
+    Year_month
+    , Customer_key
+    , Sales_amount 
+    , Monetary_segment
+    , LM_sales_amount
+    , Lifetime_sales_amount
+    , Lifetime_monetary_segment 
+    , L12M_sales_amount
 from fact_customer_snapshot
