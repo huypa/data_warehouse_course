@@ -3,7 +3,7 @@ WITH
     SELECT DISTINCT year_month
     FROM {{ref('dim_date')}}  
 )
-, dim_customer_info AS (
+, dim_customer__info AS (
     SELECT DISTINCT Customer_key
     FROM {{ref('dim_customer')}} 
 )
@@ -12,7 +12,7 @@ WITH
       dim_date.Year_month
       , dim_customer_info.Customer_key
     FROM dim_date
-    CROSS JOIN dim_customer_info 
+    CROSS JOIN dim_customer__info 
 )
 , dim_customer_attribuate__caculate AS (
     select 
@@ -22,16 +22,15 @@ WITH
     FROM {{ref('fact_sales_order_line')}}   
     group by 1,2
 )
-, dim_month_and_customer_join as (
+, dim_month_and_customer__join as (
     select 
         dim_month.year_month
         , dim_month.Customer_key
-        , coalesce(dim_customer_attribute.Sales_amount,0) as Sales_amount
+        , dim_customer_attribute.Sales_amount
     from dim_month_with_customer as dim_month
     left join  dim_customer_attribuate__caculate as dim_customer_attribute using (Year_month,Customer_key)
-    order by Customer_key, year_month asc 
 )
-, dim_customer_attribuate__with_percentile_and_LM as (
+, fact_customer_snapshot__with_percentile_and_LM as (
     select
         year_month
         , Customer_key
@@ -51,10 +50,10 @@ WITH
               , percent_rank() over (partition by year_month order by Sales_amount asc) as sales_amount_percentile
               , lag(Sales_amount,1) over (partition by Customer_key order by year_month asc) as Previous_sales_amount
               , lag(year_month,1) over (partition by Customer_key order by year_month asc) as Previous_year_month
-          from dim_month_and_customer_join
+          from dim_month_and_customer__join
           )
 )
-, dim_customer_attribuate__LM_define as (
+, fact_customer_snapshot__segment as (
     select
         year_month
         , Customer_key
@@ -70,35 +69,36 @@ WITH
             when Lifetime_sales_amount_percentile > 0.7 then 'High'
             else 'Invalid' 
           end as Lifetime_monetary_segment
-        , case when date_diff(Year_month,Previous_year_month,month) = 1 then Previous_sales_amount end as LM_sales_amount
-    from dim_customer_attribuate__with_percentile_and_LM
+        , case when date_diff(Year_month,Previous_year_month,month) = 1 then Previous_sales_amount
+          end as LM_sales_amount
+    from fact_customer_snapshot__with_percentile_and_LM
 )
-, fact_customer_snapshot_caculate_L12 as (
+, fact_customer_snapshot__caculate_L12 as (
   select
-    A.Year_month
-  , A.Customer_key
-  , A.Sales_amount 
-  , A.LM_sales_amount
-  , A.Monetary_segment
-  , A.Lifetime_sales_amount
-  , B.Sales_amount AS Previous_Sales_amount
-  , A.Lifetime_monetary_segment
- -- , B.Year_month AS Previous_Year_month
---  , DATE_DIFF(A.year_month,B.year_month,month) AS DIFF
-  from dim_customer_attribuate__LM_define AS A
-  left join dim_customer_attribuate__LM_define AS B ON A.Customer_key = B.Customer_key AND DATE_DIFF(A.year_month,B.year_month,month) between 0 and 12
+      A.Year_month
+      , A.Customer_key
+      , A.Sales_amount 
+      , A.LM_sales_amount
+      , A.Monetary_segment
+      , A.Lifetime_sales_amount
+      , B.Sales_amount AS Previous_Sales_amount
+      , A.Lifetime_monetary_segment
+    -- , B.Year_month AS Previous_Year_month
+    --  , DATE_DIFF(A.year_month,B.year_month,month) AS DIFF
+      from fact_customer_snapshot__segment AS A
+      left join fact_customer_snapshot__segment AS B ON A.Customer_key = B.Customer_key AND DATE_DIFF(A.year_month,B.year_month,month) between 0 and 12
 )
 , fact_customer_snapshot as (
 select 
-  Year_month
-  , Customer_key
-  , Sales_amount 
-  , Monetary_segment
-  , LM_sales_amount
-  , Lifetime_sales_amount
-  , Lifetime_monetary_segment
-  , sum(Previous_Sales_amount) as L12M_sales_amount
-from fact_customer_snapshot_caculate_L12 as A
+      Year_month
+      , Customer_key
+      , Sales_amount 
+      , Monetary_segment
+      , LM_sales_amount
+      , Lifetime_sales_amount
+      , Lifetime_monetary_segment
+      , sum(Previous_Sales_amount) as L12M_sales_amount
+from fact_customer_snapshot__caculate_L12 as A
 group by 1,2,3,4,5,6,7
 )
 select 
