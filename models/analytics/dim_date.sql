@@ -18,7 +18,7 @@ FROM (
   *
   , CASE WHEN day_of_week IN ('Sunday', 'Saturday') THEN "Weekend" 
          WHEN day_of_week IN ('Monday','Tuesday','Wednesday','Thursday','Friday') THEN "Weekday"
-    ELSE 'Invalid' END AS is_week_day_or_weekend
+    ELSE 'Invalid' END AS is_weekday_or_weekend
   FROM dim_date_generate
 )
 SELECT DISTINCT * 
