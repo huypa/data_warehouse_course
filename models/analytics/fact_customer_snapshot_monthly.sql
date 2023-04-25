@@ -26,7 +26,7 @@ WITH
     select 
         dim_month.year_month
         , dim_month.Customer_key
-        , dim_customer_attribute.Sales_amount
+        , coalesce(dim_customer_attribute.Sales_amount,0) as Sales_amount
     from dim_month_with_customer as dim_month
     left join  dim_customer_attribuate__caculate as dim_customer_attribute using (Year_month,Customer_key)
 )
