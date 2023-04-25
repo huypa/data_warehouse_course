@@ -1,10 +1,10 @@
 WITH dim_customer_attribute_caculate AS (
 select 
-Customer_key
-, sum(Gross_amount) as Lifetime_sales_amount
-, count(distinct Sales_order_key) as lifetime_sales_orders
-, sum(case when date_trunc(Order_date,month)='2016-04-01' then Gross_amount end ) as LM_sales_amount
-, count(distinct case when date_trunc(Order_date,month)='2016-04-01' then Sales_order_key end ) as LM_sales_orders
+  Customer_key
+  , sum(Gross_amount) as Lifetime_sales_amount
+  , count(distinct Sales_order_key) as lifetime_sales_orders
+  , sum(case when date_trunc(Order_date,month)='2016-04-01' then Gross_amount end ) as LM_sales_amount
+  , count(distinct case when date_trunc(Order_date,month)='2016-04-01' then Sales_order_key end ) as LM_sales_orders
 FROM {{ref('fact_sales_order_line')}}   
 group by 1
 )
@@ -52,28 +52,7 @@ from dim_customer_attribute_with_segment
 
 
 
-WITH dim_customer_attribute_caculate AS (
-select 
-date_trunc(order_date,month) as year_month
-, Customer_key
-, sum(Gross_amount) as Sales_amount
-from learn-dbt-379208.wide_world_importers_dwh.fact_sales_order_line
---FROM {{ref('fact_sales_order_line')}}   
-group by 1,2
-)
-, dim_customer_attribute_with_percentile as (
-select
-  year_month
-  , Customer_key
-  , Sales_amount
-  , percent_rank() over (partition by year_month order by Sales_amount asc) as LM_sales_amount_percentile
-  , lag(Sales_amount,1) over (partition by Customer_key order by year_month asc) as pre_sa
-  , sum(Sales_amount) over (partition by Customer_key order by year_month asc rows between unbounded preceding and current row ) as Lifetime_sales_amount
-  , sum(Sales_amount) over (partition by Customer_key order by year_month asc ) as Lifetime_sales_amount_2
-from dim_customer_attribute_caculate
-)
-select * from dim_customer_attribute_with_percentile
-order by year_month,Customer_key
+
 /*
 , dim_customer_attribute_with_segment as (
 select 
