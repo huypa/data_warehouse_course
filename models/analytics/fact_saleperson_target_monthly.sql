@@ -25,8 +25,8 @@ with fact_sale_order_line__source as (
   select 
     coalesce(fact_actual.year_month,fact_target.year_month ) as year_month
     , coalesce(fact_actual.salesperson_person_key,fact_target.salesperson_person_key) as salesperson_person_key
-    , fact_actual.Actual_revenue
-    , fact_target.Target_revenue
+    , coalesce(fact_actual.Actual_revenue,0) as Actual_revenue
+    , coalesce(fact_target.Target_revenue,0) as Target_revenue
   from fact_saleperson_target_monthly_actual fact_actual
   full outer join {{ref('stg_fact_sale_target_by_person')}} as fact_target 
     on fact_actual.year_month = fact_target.year_month 
