@@ -26,8 +26,9 @@ with dim_external_category__source as (
 SELECT 
       dim_category.category_key
     , dim_category.category_name
+    , dim_category.category_level
     , dim_category.parent_category_key
-    , coalesce(dim_parent_category.category_level,-1) as category_level
+    , coalesce(dim_parent_category.category_name,"Invalid") as parent_category_name
 FROM dim_external_category__rename_cast as dim_category
 LEFT JOIN dim_external_category__rename_cast as dim_parent_category
     ON dim_category.parent_category_key = dim_parent_category.category_key
