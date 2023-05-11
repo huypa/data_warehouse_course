@@ -66,9 +66,20 @@ select distinct
   , coalesce(dim_supplier.Delivery_province_name,"Invalid") as Delivery_province_name
   , coalesce(dim_supplier.Delivery_countries_name,"Invalid") as Delivery_countries_name
   , coalesce(dim_product_external.category_key,-1) as category_key
+  , coalesce(dim_category.category_level,-1) as category_level
   , coalesce(dim_category.category_name,"Invalid") as category_name
   , coalesce(dim_category.parent_category_key,-1) as parent_category_key
-  , coalesce(dim_category.category_level,-1) as category_level
+  , coalesce(dim_category.parent_category_name,"Invalid") as parent_category_name
+
+  , coalesce(dim_category.category_level_1_key,-1) as category_level_1_key
+  , coalesce(dim_category.category_level_1_name,"Invalid") as category_level_1_name
+  , coalesce(dim_category.category_level_2_key,-1) as category_level_2_key
+  , coalesce(dim_category.category_level_2_name,"Invalid") as category_level_2_name
+  , coalesce(dim_category.category_level_3_key,-1) as category_level_3_key
+  , coalesce(dim_category.category_level_3_name,"Invalid") as category_level_3_name
+  , coalesce(dim_category.category_level_4_key,-1) as category_level_4_key
+  , coalesce(dim_category.category_level_4_name,"Invalid") as category_name_level_4_name
+
 from dim_product__final as dim_product
 left join {{ref('dim_supplier')}} as dim_supplier 
   on dim_product.supplier_key = dim_supplier.supplier_key
