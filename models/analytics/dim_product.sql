@@ -68,7 +68,7 @@ select distinct
   , coalesce(dim_product_external.category_key,-1) as category_key
   , coalesce(dim_category.category_name,"Invalid") as category_name
   , coalesce(dim_category.parent_category_key,-1) as parent_category_key
-  , coalesce(dim_category.category_level,-1) as category_name
+  , coalesce(dim_category.category_level,-1) as category_level
 from dim_product__final as dim_product
 left join {{ref('dim_supplier')}} as dim_supplier 
   on dim_product.supplier_key = dim_supplier.supplier_key
