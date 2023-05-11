@@ -24,10 +24,10 @@ with dim_external_category__source as (
       , -1 as category_level
 )
 SELECT 
-    category_key
-    , category_name
-    , parent_category_key
-    , category_level
+      dim_category.category_key
+    , dim_category.category_name
+    , dim_category.parent_category_key
+    , coalesce(dim_parent_category.category_level,"Undefined") as category_level
 FROM dim_external_category__rename_cast as dim_category
 LEFT JOIN dim_external_category__rename_cast as dim_parent_category
     ON dim_category.parent_category_key = dim_parent_category.category_key
