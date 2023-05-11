@@ -80,5 +80,5 @@ left join {{ref('stg_dim_colour')}} as dim_colour
   on dim_product.colour_key = dim_colour.colour_key
 left join {{ref('stg_dim_product_external')}} as dim_product_external
   on dim_product_external.product_key = dim_product.product_key
-left join {{ref('dim_product_external_category')}} as dim_category
+left join {{ref('dim_category')}} as dim_category
   on dim_category.category_key = dim_product_external.category_key
