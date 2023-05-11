@@ -65,6 +65,7 @@ select distinct
   , coalesce(dim_supplier.Delivery_city_name ,"Invalid") as Delivery_city_name
   , coalesce(dim_supplier.Delivery_province_name,"Invalid") as Delivery_province_name
   , coalesce(dim_supplier.Delivery_countries_name,"Invalid") as Delivery_countries_name
+  , coalesce(dim_product_external_category.category_key,-1) as category_key
 from dim_product__final as dim_product
 left join {{ref('dim_supplier')}} as dim_supplier 
   on dim_product.supplier_key = dim_supplier.supplier_key
@@ -74,3 +75,5 @@ left join {{ref('stg_dim_package_type')}} as dim_outer_package_type
   on dim_product.outer_package_type_key = dim_outer_package_type.package_type_key
 left join {{ref('stg_dim_colour')}} as dim_colour
   on dim_product.colour_key = dim_colour.colour_key
+left join {{ref('dim_product_external_category')}} as dim_product_external_category
+  on dim_product.product_key = dim_product_external_category.product_key

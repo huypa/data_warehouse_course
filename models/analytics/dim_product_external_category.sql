@@ -28,5 +28,6 @@ SELECT
     , category_name
     , parent_category_key
     , category_level
-FROM dim_external_category__rename_cast
-GROUP BY 1,2
+FROM dim_external_category__rename_cast as dim_category
+LEFT JOIN dim_external_category__rename_cast as dim_parent_category
+    ON dim_category.parent_category_key = dim_parent_category.category_key
