@@ -54,6 +54,13 @@ SELECT DISTINCT
   , coalesce(fact_header.picked_by_person_key,-1) as Picked_by_person_key
   , fact_header.Salesperson_person_key
   , fact_header.Contact_person_key
+
+  , dim_product.Product_name
+  , dim_product.Brand_name
+  , dim_product.Category_level
+  , dim_product.Category_name  
+
+
   -- --- dim customer
   -- , dim_customer.Is_on_credit_Hold
   -- , dim_customer.Account_opened_Date
@@ -87,6 +94,8 @@ SELECT DISTINCT
 FROM fact_sales_order_line__caculated as fact_line
 LEFT JOIN {{ref('stg_fact_sales_order')}} as fact_header
   ON fact_line.sales_order_key = fact_header.sales_order_key
+LEFT JOIN {{ref('dim_product')}} as dim_product
+  ON fact_line.Product_key = dim_product.Product_key
 -- LEFT JOIN ref('dim_customer')}} as dim_customer
 --   ON fact_header.customer_key = dim_customer.customer_key
 -- LEFT JOIN ref('dim_product')}} as dim_product

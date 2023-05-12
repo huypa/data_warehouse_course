@@ -46,6 +46,7 @@ WITH
               , Customer_key
               , Sales_amount
               , sum(Sales_amount) over (partition by Customer_key order by year_month asc rows between unbounded preceding and current row ) as Lifetime_sales_amount
+              --, sum(Sales_amount) over (partition by Customer_key order by year_month asc rows between 12 preceding and current row ) as L12M_sales_amount             
           -- define cac chi so lien quan toi LM
               , percent_rank() over (partition by year_month order by Sales_amount asc) as sales_amount_percentile
               , lag(Sales_amount,1) over (partition by Customer_key order by year_month asc) as Previous_sales_amount
