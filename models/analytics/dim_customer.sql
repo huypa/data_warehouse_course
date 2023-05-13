@@ -6,6 +6,7 @@ with dim_customer__source as (
 , dim_customer__rename_cast as (
 select distinct 
   cast(customer_id as int ) as customer_key
+  , cast(customer_id as int ) as customer_id
   , cast(customer_name as string ) as customer_name
   , cast(phone_number as string ) as phone_number
   , cast(bill_to_customer_id as int) as bill_to_customer_key
@@ -32,6 +33,7 @@ from dim_customer__source
 , dim_customer__final as (
 select distinct 
     coalesce(customer_key,0) as customer_key
+  , coalesce(customer_id,0) as customer_id
   , coalesce(customer_category_key,0) as customer_category_key
   , coalesce(bill_to_customer_key ,0) as bill_to_customer_key
   , coalesce(buying_group_key,0) as buying_group_key
@@ -49,6 +51,7 @@ from dim_customer__rename_cast
 )
 select 
   dim_customer.Customer_key
+  , dim_customer.Customer_id
   , dim_customer.Customer_name 
   , dim_customer.Phone_number
   , dim_customer.Bill_to_customer_key
