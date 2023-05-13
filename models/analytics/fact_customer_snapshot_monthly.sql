@@ -4,20 +4,20 @@ WITH
     FROM {{ref('dim_date')}}  
 )
 , dim_customer__info AS (
-    SELECT DISTINCT Customer_key
+    SELECT DISTINCT Customer_id
     FROM {{ref('dim_customer')}} 
 )
 , dim_month_with_customer AS (
     SELECT 
       dim_date.Year_month
-      , dim_customer_info.Customer_key
+      , dim_customer_info.Customer_id
     FROM dim_date
     CROSS JOIN dim_customer__info 
 )
 , dim_customer_attribuate__caculate AS (
     select 
       date_trunc(order_date,month) as year_month
-      , Customer_key
+      , Customer_id
       , sum(Gross_amount) as Sales_amount
     FROM {{ref('fact_sales_order_line')}}   
     group by 1,2
@@ -25,15 +25,15 @@ WITH
 , dim_month_and_customer__join as (
     select 
         dim_month.year_month
-        , dim_month.Customer_key
+        , dim_month.Customer_id
         , coalesce(dim_customer_attribute.Sales_amount,0) as Sales_amount
     from dim_month_with_customer as dim_month
-    left join  dim_customer_attribuate__caculate as dim_customer_attribute using (Year_month,Customer_key)
+    left join  dim_customer_attribuate__caculate as dim_customer_attribute using (Year_month,Customer_id)
 )
 , fact_customer_snapshot__with_percentile_and_LM as (
     select
         year_month
-        , Customer_key
+        , Customer_id
         , Sales_amount
         , Lifetime_sales_amount
         , Sales_amount_percentile
@@ -43,21 +43,21 @@ WITH
     from (
           select
               year_month
-              , Customer_key
+              , Customer_id
               , Sales_amount
-              , sum(Sales_amount) over (partition by Customer_key order by year_month asc rows between unbounded preceding and current row ) as Lifetime_sales_amount
-              --, sum(Sales_amount) over (partition by Customer_key order by year_month asc rows between 12 preceding and current row ) as L12M_sales_amount             
+              , sum(Sales_amount) over (partition by Customer_id order by year_month asc rows between unbounded preceding and current row ) as Lifetime_sales_amount
+              --, sum(Sales_amount) over (partition by Customer_id order by year_month asc rows between 12 preceding and current row ) as L12M_sales_amount             
           -- define cac chi so lien quan toi LM
               , percent_rank() over (partition by year_month order by Sales_amount asc) as sales_amount_percentile
-              , lag(Sales_amount,1) over (partition by Customer_key order by year_month asc) as Previous_sales_amount
-              , lag(year_month,1) over (partition by Customer_key order by year_month asc) as Previous_year_month
+              , lag(Sales_amount,1) over (partition by Customer_id order by year_month asc) as Previous_sales_amount
+              , lag(year_month,1) over (partition by Customer_id order by year_month asc) as Previous_year_month
           from dim_month_and_customer__join
           )
 )
 , fact_customer_snapshot__segment as (
     select
         year_month
-        , Customer_key
+        , Customer_id
         , Sales_amount
         , case when sales_amount_percentile < 0.3 then 'Low'
             when sales_amount_percentile between 0.3 and 0.7 then 'Medium'
@@ -77,7 +77,7 @@ WITH
 , fact_customer_snapshot__caculate_L12 as (
     select
         A.Year_month
-        , A.Customer_key
+        , A.Customer_id
         , A.Sales_amount 
         , A.LM_sales_amount
         , A.Monetary_segment
@@ -87,12 +87,12 @@ WITH
       -- , B.Year_month AS Previous_Year_month
       --  , DATE_DIFF(A.year_month,B.year_month,month) AS DIFF
     from fact_customer_snapshot__segment AS A
-    left join fact_customer_snapshot__segment AS B ON A.Customer_key = B.Customer_key AND DATE_DIFF(A.year_month,B.year_month,month) between 0 and 12
+    left join fact_customer_snapshot__segment AS B ON A.Customer_id = B.Customer_id AND DATE_DIFF(A.year_month,B.year_month,month) between 0 and 12
 )
 , fact_customer_snapshot as (
     select 
         Year_month
-        , Customer_key
+        , Customer_id
         , Sales_amount 
         , Monetary_segment
         , LM_sales_amount
@@ -104,7 +104,7 @@ WITH
 )
 select 
     Year_month
-    , Customer_key
+    , Customer_id
     , Sales_amount 
     , Monetary_segment
     , LM_sales_amount

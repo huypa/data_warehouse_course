@@ -5,8 +5,8 @@ with dim_customer__source as (
 )
 , dim_customer__rename_cast as (
 select distinct 
-  cast(customer_id as int ) as customer_key
-  , cast(customer_id as int ) as customer_id
+   cast(customer_id as int ) as customer_key
+  ,cast(customer_id as int ) as customer_id
   , cast(customer_name as string ) as customer_name
   , cast(phone_number as string ) as phone_number
   , cast(bill_to_customer_id as int) as bill_to_customer_key
@@ -50,7 +50,10 @@ select distinct
 from dim_customer__rename_cast
 )
 select 
-  dim_customer.Customer_key
+  dim_customer_membership.Customer_key
+  , dim_customer_membership.Begin_effective_date
+  , dim_customer_membership.End_effective_date
+  , dim_customer_membership.Membership
   , dim_customer.Customer_id
   , dim_customer.Customer_name 
   , dim_customer.Phone_number
@@ -79,5 +82,5 @@ left join {{ref('stg_dim_buying_group')}} as dim_buying_group
 left join {{ref('stg_dim_delivery_method')}} as dim_delivery_method on dim_delivery_method.delivery_method_key = dim_customer.delivery_method_key
 left join {{ref('stg_dim_city')}} as dim_delivery_city on dim_delivery_city.city_key = dim_customer.delivery_city_key
 left join {{ref('dim_person')}} as dim_primary_contact_person on dim_primary_contact_person.person_key = dim_customer.primary_contact_person_key
-
+left join {{ref('dim_customer_membership')}} as dim_customer_membership on dim_customer_membership.customer_id = dim_customer.customer_id
 --- key lay tu goc, coalesce valid vs undefined, personkey, rename: city vs person theo tien to 

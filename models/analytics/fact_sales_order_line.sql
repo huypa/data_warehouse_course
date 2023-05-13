@@ -61,11 +61,8 @@ SELECT DISTINCT
   , dim_product.Category_name  
 
 
-  -- --- dim customer
-  -- , dim_customer.Is_on_credit_Hold
-  -- , dim_customer.Account_opened_Date
-  -- , dim_customer.Standard_discount_percentage
-  -- , dim_customer.Customer_category_name
+  --- dim customer
+  , dim_customer.Customer_key
   -- , dim_customer.Buying_group_name
   -- , dim_customer.Delivery_method_name as Cus_delivery_method_name
   -- , dim_customer.Delivery_city_name as Cus_delivery_city_name
@@ -96,11 +93,5 @@ LEFT JOIN {{ref('stg_fact_sales_order')}} as fact_header
   ON fact_line.sales_order_key = fact_header.sales_order_key
 LEFT JOIN {{ref('dim_product')}} as dim_product
   ON fact_line.Product_key = dim_product.Product_key
--- LEFT JOIN ref('dim_customer')}} as dim_customer
---   ON fact_header.customer_key = dim_customer.customer_key
--- LEFT JOIN ref('dim_product')}} as dim_product
---   ON fact_line.Product_key = dim_product.Product_key
--- RIGHT JOIN ref('dim_date')}} as dim_date
---   ON fact_header.order_date = dim_date.date
- 
---where fact_header.order_date is not null,
+LEFT JOIN ref{{('dim_customer')}} as dim_customer
+  ON fact_header.customer_id = dim_customer.customer_id and fact_line.Order_date between dim_customer.begin_effective_date and dim_customer.end_effective_date
