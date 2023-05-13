@@ -50,7 +50,7 @@ SELECT DISTINCT
   , fact_line.Sales_order_key
   , fact_line.Product_key
  -- , fact_line.Package_type_key
-  , fact_header.Customer_key
+--  , fact_header.Customer_key
   , coalesce(fact_header.picked_by_person_key,-1) as Picked_by_person_key
   , fact_header.Salesperson_person_key
   , fact_header.Contact_person_key
@@ -93,5 +93,5 @@ LEFT JOIN {{ref('stg_fact_sales_order')}} as fact_header
   ON fact_line.sales_order_key = fact_header.sales_order_key
 LEFT JOIN {{ref('dim_product')}} as dim_product
   ON fact_line.Product_key = dim_product.Product_key
-LEFT JOIN ref{{('dim_customer')}} as dim_customer
-  ON fact_header.customer_id = dim_customer.customer_id and fact_line.Order_date between dim_customer.begin_effective_date and dim_customer.end_effective_date
+LEFT JOIN {{ref('dim_customer')}} as dim_customer
+  ON fact_header.customer_id = dim_customer.customer_id and fact_header.Order_date between dim_customer.begin_effective_date and dim_customer.end_effective_date
