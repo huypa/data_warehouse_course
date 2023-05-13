@@ -1,6 +1,6 @@
 WITH dim_customer_attribute_caculate AS (
 select 
-  Customer_key
+  Customer_id
   , sum(Gross_amount) as Lifetime_sales_amount
   , count(distinct Sales_order_key) as lifetime_sales_orders
   , sum(case when date_trunc(Order_date,month)='2016-04-01' then Gross_amount end ) as LM_sales_amount
@@ -10,7 +10,7 @@ group by 1
 )
 , dim_customer_attribute_with_percentile as (
 select
-  Customer_key
+  Customer_id
   , Lifetime_sales_amount
   , lifetime_sales_orders
   , LM_sales_amount
@@ -21,7 +21,7 @@ from dim_customer_attribute_caculate
 )
 , dim_customer_attribute_with_segment as (
 select 
-  Customer_key
+  Customer_id
   , Lifetime_sales_amount
   , case when Lifetime_sales_amount_percentile < 0.3 then 'Low'
          when Lifetime_sales_amount_percentile between 0.3 and 0.7 then 'Medium'
