@@ -1,28 +1,65 @@
-# Data Warehouse Project
+# ⭐ Data Warehouse Project (BigQuery + DBT)
 
-Hello! I'm {your_name}, and this is my project to show my data warehouse skills.
+This project showcases my ability to design and build an end-to-end **data warehouse** using **Google BigQuery**, **DBT**, and **Kimball Dimensional Modeling**, based on the [Wide World Importers](https://learn.microsoft.com/en-us/sql/samples/wide-world-importers-what-is?view=sql-server-ver17) dataset.
 
-## 🎯 Knowledge & techniques that I achieved
+## 🚀 What This Project Demonstrates
+- Building a data warehouse from scratch  
+- Star-schema design and Kimball modeling  
+- Modular DBT transformations (staging → dimensional → facts)  
+- Automated DBT tests for data quality  
+- Role-playing dimensions, snapshots, and business metrics  
 
-- Building an Data Warehouse from scratch
-- Designing data models following [Kimball's Dimensional Modeling techniques](https://www.goodreads.com/en/book/show/748203)
-- Implementing end-to-end data pipeline using [DBT](https://www.getdbt.com/) and SQL
-- Implementing data quality checks using [DBT test](https://docs.getdbt.com/docs/build/tests)
+## 📁 Project Structure (Key Models)
 
-## 📃 How to check this project
-You can find the diagrams at [`diagrams`](diagrams).
+### **Dimensions**
+- `dim_category.sql`
+- `dim_category_rev.sql`
+- `dim_customer.sql`
+- `dim_customer_attribute.sql`
+- `dim_customer_membership.sql`
+- `dim_date.sql`
+- `dim_person.sql`
+- `dim_product.sql`
+- `dim_sales_order_line_indicator.sql`
+- `dim_supplier.sql`
 
-You can find data models at [`models/analytics`](models/analytics).
+### **Facts**
+- `fact_sales_order.sql`
+- `fact_sales_order_line.sql`
+- `fact_purchase_order.sql`
+- `fact_purchase_order_lines.sql`
+- `fact_supplier_transaction.sql`
+- `fact_customer_snapshot_monthly.sql`
+- `fact_salesperson_target_monthly.sql`
 
-You can find data quality tests at [`tests`](tests).
+### **Role-Playing Dimensions**
+Located under:  
+- `models/analytics/role_playing_dimensions/`
 
-## Modules that I implemented
+## 🧪 DBT Tests
+Located in `models/analytics/DBT_test/`:
+- `dim_product.yml`
+- `dim_sales_order_line_indicator.yml`
+- `fact_purchase_order_lines.yml`
+- `fact_salesperson_target_monthly.yml`
+- `fact_sales_order_line.yml`
+- `fact_supplier_transaction.yml`
 
-- Sales Orders
-- Purchase Orders
+Covers:
+- Primary key checks (`unique`, `not_null`)
+- FK relationships
+- Accepted values
+- Business rule logic via custom tests
 
-## More info
-- Raw dataset: [Wide World Importers](https://learn.microsoft.com/en-us/sql/samples/wide-world-importers-what-is?view=sql-server-ver16)
-- Database: [BigQuery](https://cloud.google.com/bigquery)
-- Course: [Data Warehouse by Vitlamdata](https://vitlamdata.substack.com/p/khoa-hoc-xu-ly-du-lieu-cho-data-warehouse)
-# Portfolio-Big-Querry-and-DBT
+## 🛠 Tech Stack
+- **Data Warehouse:** Google BigQuery  
+- **Transformation:** DBT  
+- **Modeling:** Kimball Dimensional Modeling  
+- **Dataset:** Wide World Importers  
+- **Course:** Data Warehouse by Vitlamdata  
+
+## 📘 How to Explore
+- **Analytics models:** `models/analytics/`  
+- **DBT tests:** `models/analytics/DBT_test/`  
+- **Lineage graph:** Run → `dbt docs generate` + `dbt docs serve`
+
